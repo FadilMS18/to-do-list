@@ -1,0 +1,1 @@
+export let x = 'this is from first.js'

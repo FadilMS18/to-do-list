@@ -19,7 +19,8 @@ module.exports={
             meta:{
                 description:'To-Do-List the odin project',
                 author:'FadilMs18',
-            }
+            },
+            inject:'body'
         })
     ],
     module:{
