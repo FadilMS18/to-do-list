@@ -1,5 +1,5 @@
 import './css/style.css'
-import { x as mar } from './js/first'
+import { x as mar, addProjectContent } from './js/first'
 
 
 console.log('hello, world!')
@@ -46,5 +46,19 @@ function makeSideBar(){
     return side
 }
 
-body.appendChild(makeNavbar())
-body.appendChild(makeSideBar())
+// body.appendChild(makeNavbar())
+// body.appendChild(makeSideBar())
+console.log('hello, world')
+
+document.querySelector('#dark-button-container').addEventListener('click', ()=>{
+    let ball = document.querySelector('#ball')    
+    ball.classList.contains('translate-right') ? ball.classList.remove('translate-right') 
+    : ball.classList.add('translate-right')
+})
+
+const addNewProject = document.querySelector('#add-new-project')
+
+addNewProject.addEventListener('click', ()=>{
+    const projectContainer = document.querySelector('#projects-container')
+    projectContainer.appendChild(addProjectContent())
+})

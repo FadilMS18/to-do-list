@@ -7,7 +7,7 @@ module.exports = merge(common, {
     devServer:{
         static:'./dist',
         hot:true,
-        watchFiles:['./src/css', './src/js'],
+        watchFiles:['./src/css', './src/js', './src/index.html'],
         client:{
             logging:'none'
         }

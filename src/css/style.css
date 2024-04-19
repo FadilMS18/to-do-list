@@ -2,6 +2,9 @@
     margin:0;
     padding:0;
 }
+*{
+    box-sizing: content-box;
+}
 
 :root{
     font-family:arial, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -14,45 +17,213 @@
 
 body{
     height: 100vh;
-    background-image: linear-gradient(to right bottom, #F4EEFF, #DCD6F7, #A6B1E1, #424874);
+    /* background-image: linear-gradient(to right bottom, #F4EEFF, #DCD6F7, #A6B1E1, #424874); */
+    background-color: rgb(55, 55, 55);
+
 }
 
-nav.nav{
+
+
+#nav{
     height: 70px;
     background-color: aqua;
-    /* width: 100%; */
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding:0 50px;
+    position: relative;
+    z-index: 100;
 }
 
-.nav-right-section{
+#nav-right-section{
     display: flex;
     align-items: center;
     gap:10px;
 }
 
-#dark-button{
+#dark-button-container{
     background-color: lightgreen;
     border: none;
     border-radius:5px;
     padding:10px 15px;
     box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, .3);
+    display: flex;
+    transition: .25s;
+    cursor: pointer;
 }
 
+#dark-button{
+    padding:10px;
+    display: flex;
+    width: 65px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, .3);
+    cursor: pointer;
+}
 
+#ball{
+    background-color: black;
+    width: 10px;
+    height: 10px;
+    border: none;
+    border-radius:10px;
+    transition: .25s;
+}
 
-aside.sidebar{
-    /* width:100px; */
+span.translate-right{
+    translate: 35px 0px;
+}
+
+#ball::after{
+    content: "";
+}
+
+#bg-image{
+    position: absolute;
+    width: 100%;
+    top:0;
+    bottom:0;
+    left:0;
+
+    background: url(./../img/office-bg-theStandingDesk\ on\ unsplash.jpg) no-repeat center;
+    background-size: cover;
+    filter: blur(5px) brightness(35%);
+}
+
+#sidebar{
+    position: absolute;
+    top:70px;
+    bottom:0;
+    left:0;
+    width: 225px;
+
+    background-color: lightgreen;
+    display: flex;
+    gap:15px;
+    flex-direction: column;
+    align-items: center;
+}
+
+#top-sidebar{
+    width: 80%;
+    padding:20px 10%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: absolute;
-    left:0;
-    top:70px;
-    bottom:0;
-    padding:50px;
+    /* background-color: lightgreen; */
 
-    background-color: lightcoral;
+    gap:20px;
+
+    border-bottom: 2px solid black;
+}
+
+button.due-to-button{
+    display: flex;
+    align-items: center;
+    gap:10px;
+    width:inherit;
+    padding:7px 20px;
+    border:none;
+    border-radius:5px;
+    text-align: start;
+
+    font-weight: bold;
+    transition: .2s;
+    cursor: pointer;
+
+    background-color:snow;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, .2);
+}
+
+button.due-to-button:hover, #add-new-project:hover, ntent-hover{
+    background-color: black;
+    color: snow;
+    box-shadow:0px 0px 10px 2px rgba(255, 255, 255, 1); 
+    transform: scale(1.05);
+}
+
+button.due-to-button:first-of-type::before{
+    content:url(./../img/svg/sim-card-svgrepo-com.svg);
+}
+button.due-to-button:nth-child(2):before{
+    content:url(./../img/svg/schedule-svgrepo-com.svg);
+}
+button.due-to-button:last-child:before{
+    content:url(./../img/svg/article-svgrepo-com.svg);
+}
+
+button.due-to-button::before{
+    width:35px;
+    height:35px;
+}
+
+#projects-legend{
+    align-self: start;  
+    margin:0 0 10px 10px;
+}
+
+#projects-container{
+    display: grid;
+    width: 80%;
+    padding:0 10%;
+    gap:15px;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 45px;
+    max-height: 375px;
+    overflow: auto;
+    box-shadow: 0px 6px 7px 1px rgba(0, 0, 0, .05);
+    padding-bottom: 15px;;
+}
+
+.project-content{
+    text-align: center;
+    font-size: 0.85rem;
+    display: flex;
+    gap:10px;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 5px;;
+    transition: .25s;
+    cursor: pointer;
+    padding:10px 5px;
+    background-color: snow;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, .2);
+}
+
+.project-content:hover{
+    transform: scale(1.05) translate(10px);
+    background-color: black;
+    color: snow;
+    border: 2px solid snow;
+}
+
+.project-content > svg, .project-content > img{
+    min-width:35px;
+    height: 35px;;
+}
+
+#add-new-project{
+    position: absolute;
+    display: flex;
+    gap:7px;
+    align-items: center;
+    bottom:50px;
+    left:10%;
+    right: 10%;
+
+    padding:10px 15px;
+    font-weight: bold;
+    border:none;
+    border-radius:5px;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, .3);
+    transition: .2s;
+    cursor: pointer;
+}
+
+#add-new-project::before{
+    content: url(./../img/svg/pencil-revision-svgrepo-com.svg);
+    transform: rotateY(180deg) rotateZ(45deg) ;
+    width: 35px;
+    height: 35px;;
 }
