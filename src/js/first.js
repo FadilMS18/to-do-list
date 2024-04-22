@@ -7,7 +7,7 @@ function pickRandomImg(){
 }
 
 
-export function addProjectContent(){
+function addProjectContent(title){
     const div = document.createElement('div')
     div.classList.add('project-content')
 
@@ -16,11 +16,11 @@ export function addProjectContent(){
     div.appendChild(img)
 
     const h4 = document.createElement('h4')
-    h4.textContent = 'Project Name'
+    h4.textContent = title
     div.appendChild(h4)
 
     return div
 }
 
-
+export { addProjectContent }
 

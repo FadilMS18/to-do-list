@@ -1,10 +1,10 @@
 import './css/style.css'
-import { x as mar, addProjectContent } from './js/first'
+import './css/dialog.css'
+import { x as mar } from './js/first'
+import { projectModal } from './js/newProject'
 
 
-console.log('hello, world!')
-
-console.log('hay')
+const body = document.body
 
 console.log(mar)
 
@@ -28,13 +28,11 @@ function makeNavbar(){
 
     div.appendChild(button)
     div.appendChild(p)
-
     nav.appendChild(div)
-    
     
     return nav
 }
-const body = document.querySelector('body')
+
 
 function makeSideBar(){
     const side = document.createElement('aside')
@@ -46,19 +44,28 @@ function makeSideBar(){
     return side
 }
 
-// body.appendChild(makeNavbar())
-// body.appendChild(makeSideBar())
-console.log('hello, world')
-
+// Dark Button 
 document.querySelector('#dark-button-container').addEventListener('click', ()=>{
     let ball = document.querySelector('#ball')    
     ball.classList.contains('translate-right') ? ball.classList.remove('translate-right') 
     : ball.classList.add('translate-right')
 })
 
-const addNewProject = document.querySelector('#add-new-project')
+// Sidebar left & right
+const sideBarOpener = document.querySelector('#sidebar-opener')
 
-addNewProject.addEventListener('click', ()=>{
-    const projectContainer = document.querySelector('#projects-container')
-    projectContainer.appendChild(addProjectContent())
+sideBarOpener.addEventListener('click', ()=>{
+    if(!sideBarOpener.classList.contains('sidebar-close')){
+        const sidebar = document.querySelector('#sidebar')
+        sidebar.classList.add('sidebar-container-close')
+        sideBarOpener.classList.add('sidebar-close')
+    }else{
+        const sidebar = document.querySelector('#sidebar')
+        sidebar.classList.remove('sidebar-container-close')
+        sideBarOpener.classList.remove('sidebar-close')
+    }
 })
+
+// Add New project modal
+const addNewProject = document.querySelector('#add-new-project')
+addNewProject.addEventListener('click', projectModal)

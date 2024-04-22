@@ -1,0 +1,117 @@
+input:focus, textarea:focus{
+    outline: none;
+}
+
+#project-dialog[open]{
+    animation: dialogShow .5s forwards
+}
+
+#project-dialog{
+    border: none;
+    overflow: visible;
+    background-color: rgba(0, 0, 0,0);
+    opacity: 1;
+    padding:0;
+    animation: dialogClose .5s ;
+}
+
+#project-dialog[open]::backdrop{
+    animation: backdropOpen .5s forwards;
+    
+}
+
+#project-form{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--PrimaryOne);
+    gap:20px;
+    padding:20px 25px 30px;
+    border:none;
+    border-radius:5px;
+    box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, .45 );
+}
+#project-form > h2{
+    color: var(--FontOne);
+    margin-bottom:10px;
+} 
+
+
+#project-name{
+    width: 500px;;
+    font-size: 1.1rem;
+    padding:10px 25px;
+    border-radius:5px;
+    border:none;
+}
+
+#project-name, #project-form > textarea{
+    background-color: var(--TerTierOne);
+    transition: .25s;
+    color: var(--FontOne);
+    box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, .15 );
+}
+
+#project-name::placeholder, #project-form > textarea::placeholder{
+    color: rgb(215, 215, 215);
+}
+
+#project-name:focus, #project-form > textarea:focus{
+    transform: scale(1.01);
+    background-color: black;
+    color: var(--TerTierOne);
+    box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, .25 );
+}
+#project-form > textarea{
+    resize: none;
+    border:none;
+    border-radius:5px;
+    padding:10px 15px;
+    transition: .25s;
+}
+
+#project-confirm{
+    align-self: end;
+    font-weight: bold;
+    padding:15px 25px;
+    background-color: var(--TerTierOne);
+    color: var(--FontOne);
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+@keyframes dialogShow {
+    0%{
+        display: none;
+        opacity: 0;
+        transform: scale(0);
+    }
+    100%{
+        display: block;
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes dialogClose {
+    0%{
+        display: block;
+        opacity: 1;
+        transform: scale(1);
+    }
+    100%{
+        display: none;
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+@keyframes backdropOpen {
+    0%{
+        background-color: rgba(0, 0, 0,0);
+    }
+    100%{
+        background-color: rgba(0, 0, 0, .75 );
+    }
+}
