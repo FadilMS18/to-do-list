@@ -1,10 +1,13 @@
 import './css/style.css'
 import './css/dialog.css'
+import './css/main.css'
 import { x as mar } from './js/first'
 import { projectModal } from './js/newProject'
-
+import { tasks, newTask } from './js/taskEdit'
 
 const body = document.body
+
+console.log(tasks)
 
 console.log(mar)
 
@@ -59,13 +62,21 @@ sideBarOpener.addEventListener('click', ()=>{
         const sidebar = document.querySelector('#sidebar')
         sidebar.classList.add('sidebar-container-close')
         sideBarOpener.classList.add('sidebar-close')
+        document.getElementById('main-container').classList.add('go-left')
     }else{
         const sidebar = document.querySelector('#sidebar')
         sidebar.classList.remove('sidebar-container-close')
         sideBarOpener.classList.remove('sidebar-close')
+        document.getElementById('main-container').classList.remove('go-left')
     }
 })
 
 // Add New project modal
 const addNewProject = document.querySelector('#add-new-project')
 addNewProject.addEventListener('click', projectModal)
+
+
+
+//  tasks for edit read and delete,add new task
+const newTaskButton = document.getElementById('new-task-button')
+newTaskButton.addEventListener('click', newTask)

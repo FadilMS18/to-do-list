@@ -1,0 +1,133 @@
+#main-container{
+    display: flex;
+    position: relative;
+    margin: 50px 150px 50px 350px;
+    transition: .25s;
+}
+
+#main-container.go-left{
+    transform: translateX(-10%);
+    margin-right:100px;
+}
+
+#main-content{
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+    border: none;
+    border-radius:10px;
+    max-height: 600px;
+    width: 100%;
+    background-color: var(--PrimaryOne);
+    color: var(--FontOne);
+    padding:10px 30px 100px;
+    position: relative;
+}
+
+#top-main{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#top-main > h2{
+    font-size: 1.5rem;
+}
+#top-main > img{
+    height: 50px;;
+    width: 150px;
+    border: none;
+    border-radius: 3px;;
+    box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, .4);
+}
+
+#center-main{
+    display: flex;
+    flex-direction: column;
+    gap:25px;
+    flex:1;
+    padding:10px 25px 0 15px ;
+}
+#center-main.scroll{
+    overflow: hidden auto;
+}
+
+div.tasks{
+    display: flex;
+    justify-content: space-between ;
+    align-items: center;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, .2);
+    padding:10px 30px;
+    background-color: var(--TerTierOne);
+    transition: .25s;
+    cursor: pointer;
+}
+
+div.tasks:hover{
+    transform: scale(1.01);
+}
+
+div.tasks.erase{
+    animation: taskDelete .4s ;
+}
+
+#button-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    gap:10px;
+}
+
+#button-container > p{
+    margin-right: 30px;;
+}
+
+#button-container > img{
+    height: 30px;
+    width: 30px;
+    padding: 3px;
+    border: none;
+    border-radius: 50%;
+    transition: .25s;
+    background-color: rgb(218, 216, 216);
+}
+
+#button-container > img:hover{
+    background-color: black;
+}
+
+#new-task-button{
+    background-color: var(--TerTierOne);
+    color: var(--FontOne);
+    font-weight: bold;
+    box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, .2);
+    position: absolute;
+    bottom:20px;
+    right:30px;
+
+    padding:10px 20px;
+    border: none;
+    border-radius: 5px;;
+    transition: .25s;
+    cursor: pointer;
+}
+
+#new-task-button:hover{
+    transform: scale(1.05);
+    background-color: black;
+}
+
+
+/* Animation */
+@keyframes taskDelete {
+    0%{
+        opacity: 1;
+        transform: scale(1);
+    }
+    100%{
+        opacity: 0;
+        transform: scale(200%) translateY(-50%);
+    }
+}
