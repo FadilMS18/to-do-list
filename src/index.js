@@ -7,8 +7,6 @@ import { tasks, newTask } from './js/taskEdit'
 
 const body = document.body
 
-console.log(tasks)
-
 console.log(mar)
 
 function makeNavbar(){
@@ -78,5 +76,5 @@ addNewProject.addEventListener('click', projectModal)
 
 
 //  tasks for edit read and delete,add new task
-const newTaskButton = document.getElementById('new-task-button')
-newTaskButton.addEventListener('click', newTask)
+// const newTaskButton = document.getElementById('new-task-button')
+// newTaskButton.addEventListener('click', newTask)

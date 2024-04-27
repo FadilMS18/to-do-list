@@ -28,4 +28,8 @@ const editImage = require('./../img/svg/edit-content-svgrepo-com.svg')
 const readImage = require('./../img/svg/read-svgrepo-com.svg')
 const deleteImage = require('./../img/svg/trash-delete-bin-svgrepo-com.svg')
 
-export {article, pencil, schedule, simCard, manySvg, editImage, readImage, deleteImage}
+// Donut cat
+
+const donutCat = require('./../img/gif/rainbow-donut-cat.gif')
+
+export {article, pencil, schedule, simCard, manySvg, editImage, readImage, deleteImage, donutCat}
