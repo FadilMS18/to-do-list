@@ -12,9 +12,10 @@ const projectContainer = document.querySelector('#projects-container')
 const projectConfirm = document.querySelector('#project-confirm')
 
 const body = document.body
-window.addEventListener('DOMContentLoaded', projectModal)
+// window.addEventListener('DOMContentLoaded', projectModal)
 
 let projects = []
+
 
 class Project {
     constructor(projectName, projectDescription){
@@ -44,17 +45,25 @@ function submitProject(event){
     let desc = projectDescription.value
 
     let newObj = new Project(name, desc)
+    
     projectName.value = ''
     projectDescription.value = ''
 
     projects.push(newObj)
     projects.forEach((object, index)=>{
         let project = addProjectContent(object.name)
+    
+        // projectDom.push(project)
         projectContainer.appendChild(project)
+        
         project.addEventListener('click', ()=>{
-            project.classList.contains('focus') 
-            ? project.classList.remove('focus') 
-            : project.classList.add('focus')
+            let projectDom = Array.from(document.querySelectorAll('.project-content'))
+            projectDom.forEach(div =>{
+                if(div.classList.contains('focus')){
+                    div.classList.remove('focus')
+                }
+            })
+            project.classList.add('focus')
 
             // console.log(projects[index])
 
@@ -112,6 +121,7 @@ function submitProject(event){
 
         })
     })
+    
     projectDialog.close()
 }
 
@@ -168,7 +178,7 @@ function editTask(){
     console.log(projects)
 }
 
-console.log(projects.tasks)
+
 
 export { projectModal, makeAnElement, appendMe, editTask , projects} 
 

@@ -4,6 +4,7 @@ import './css/main.css'
 import { x as mar } from './js/first'
 import { projectModal } from './js/newProject'
 import { tasks, newTask } from './js/taskEdit'
+import { test } from './js/allTaskDOM'
 
 const body = document.body
 

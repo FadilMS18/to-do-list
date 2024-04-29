@@ -55,7 +55,7 @@ input:focus, textarea:focus{
     color: rgb(215, 215, 215);
 }
 
-#project-name:focus, #project-form > textarea:focus{
+#project-name:focus, #project-form > textarea:focus, #date:focus, #select-dif:focus{
     transform: scale(1.01);
     background-color: black;
     color: var(--TerTierOne);
@@ -67,6 +67,22 @@ input:focus, textarea:focus{
     border-radius:5px;
     padding:10px 15px;
     transition: .25s;
+}
+
+#date, #select-dif{
+    color: var(--FontOne);
+    background-color: var(--TerTierOne);
+    padding:10px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, .15 );
+    transition: .25s;
+    cursor: pointer;
+}
+#date::-webkit-calendar-picker-indicator {
+    filter: invert(1);
 }
 
 #project-confirm{

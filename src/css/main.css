@@ -63,6 +63,8 @@ div.tasks{
     background-color: var(--TerTierOne);
     transition: .25s;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 div.tasks:hover{
@@ -72,6 +74,27 @@ div.tasks:hover{
 div.tasks.erase{
     animation: taskDelete .4s ;
 }
+
+#dif-meter{
+    position: absolute;
+    height: 100%;
+    border:none ;
+    border-radius: 50%;
+    width: 30px;
+    background-color: var(--FontOne);
+    left:-15px;
+}
+
+#dif-meter.easy{
+    background-color: lightgreen;
+}
+#dif-meter.medium{
+    background-color: orange;
+}
+#dif-meter.hard{
+    background-color: red;
+}
+
 
 #button-container{
     display: flex;

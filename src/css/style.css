@@ -28,7 +28,7 @@
 }
 
 body{
-    height: 100vh;
+    height: 1000vh;
     /* background-image: linear-gradient(to right bottom, #F4EEFF, #DCD6F7, #A6B1E1, #424874); */
     background-color: rgb(55, 55, 55);
 
@@ -193,7 +193,8 @@ button.due-to-button::before{
     max-height: 375px;
     overflow: auto;
     box-shadow: 0px 6px 7px 1px rgba(0, 0, 0, .05);
-    padding-bottom: 15px; ;
+    padding-top:5px;
+    padding-bottom:15px;
 
 }
 
@@ -276,4 +277,10 @@ button.due-to-button::before{
 
 #sidebar-opener.sidebar-close{
     transform:rotateZ(-180deg)
+}
+
+button.due-to-button.fokus{
+    background-color: black;
+    border: 2px solid white;
+    box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, .35);
 }

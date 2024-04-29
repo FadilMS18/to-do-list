@@ -6,6 +6,7 @@ let body = document.body
 
 let manyTask = []
 
+
 function newTask(){
     const dial = makeDialog()
     const content = makeAContent('', '', false)

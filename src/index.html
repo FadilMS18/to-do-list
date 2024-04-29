@@ -53,18 +53,34 @@
                 <img src="./img/gif/rainbow-donut-cat.gif" alt="cat-on-donut-on-rainbow-donut">
             </div>
             <div id="center-main">
-                <h3 id="no-task-heading" style="text-align: center;">You Don't Have any task here yet</h3>
+                <!-- <h3 id="no-task-heading" style="text-align: center;">You Don't Have any task here yet</h3> -->
+                <div id="date-test" class="tasks">
+                    <span id="dif-meter" class="medium"></span>
+                    <p id="task-name">testing</p>
+                    <div id="button-container">
+                        <input type="date" name="" id="">
+                        <img id="edit-task"></img>
+                        <img id="read-task"></img>
+                        <img id="delete-task"></img></div>
+                </div>
             </div>
 
             <button id="new-task-button">Add task</button>
         </div>
     </main> 
 
-    <dialog id="project-dialog" >
+    <dialog id="project-dialog"  >
         <form id="project-form" action="">
             <h2>New Project</h2>
             <input spellcheck="false" required autocomplete="off" type="text" maxlength="16" name="" id="project-name" placeholder="Project Name (16 Characters Max)">
             <textarea spellcheck="false" autocomplete="off" name="" id="project-description" cols="30" rows="10" placeholder="Add Project Description Here..."></textarea>
+            <input type="date" required name="" id="date">
+            <select name="" id="select-dif">
+                <option value="easy">-- Select the priority --</option>
+                <option value="hard">Important</option>
+                <option value="medium">Not That important</option>
+                <option value="easy">Optional</option>
+            </select>
             <button autofocus id="project-confirm" type="submit">Confirm</button>
         </form>
     </dialog>
