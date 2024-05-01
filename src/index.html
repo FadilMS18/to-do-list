@@ -25,7 +25,7 @@
         <div id="top-sidebar">
             <button class="due-to-button">All</button>
             <button class="due-to-button">Today</button>
-            <button class="due-to-button">This Week</button>
+            <button class="due-to-button">Next Week</button>
         </div>
 
         <h2 id="projects-legend">Projects</h2>
@@ -58,7 +58,7 @@
                     <span id="dif-meter" class="medium"></span>
                     <p id="task-name">testing</p>
                     <div id="button-container">
-                        <input type="date" name="" id="">
+                        <p id="date">12-1-2024</p>
                         <img id="edit-task"></img>
                         <img id="read-task"></img>
                         <img id="delete-task"></img></div>
@@ -69,18 +69,18 @@
         </div>
     </main> 
 
-    <dialog id="project-dialog"  >
+    <dialog id="project-dialog" >
         <form id="project-form" action="">
             <h2>New Project</h2>
             <input spellcheck="false" required autocomplete="off" type="text" maxlength="16" name="" id="project-name" placeholder="Project Name (16 Characters Max)">
             <textarea spellcheck="false" autocomplete="off" name="" id="project-description" cols="30" rows="10" placeholder="Add Project Description Here..."></textarea>
-            <input type="date" required name="" id="date">
+            <!-- <input type="date" required name="" id="date-input">
             <select name="" id="select-dif">
                 <option value="easy">-- Select the priority --</option>
                 <option value="hard">Important</option>
                 <option value="medium">Not That important</option>
                 <option value="easy">Optional</option>
-            </select>
+            </select> -->
             <button autofocus id="project-confirm" type="submit">Confirm</button>
         </form>
     </dialog>

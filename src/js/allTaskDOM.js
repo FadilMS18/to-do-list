@@ -1,4 +1,4 @@
-import { parseISO, format, isAfter, isBefore } from "date-fns"
+import {format, isAfter, isBefore } from "date-fns"
 export let test = 'test'
 // isAfter(isThisAfter, this)
 
@@ -16,13 +16,13 @@ timeButton.forEach(button =>{
     })
 })
 
-let today = new Date()
-let now = format(today, 'yyyy-MM-dd')
+let now = new Date()
+let today = format(now, 'dd-MM-yyyy')
 
-const dateTest = document.getElementById('date-test')
-const date = document.querySelector('#button-container > input')
-const img = document.querySelector('#button-container > img')
-date.addEventListener('change', ()=>{
-    console.log(`${date.value} = ${now}`)
-    console.log(isBefore(date.value, now))
-})
+// const dateTest = document.getElementById('date-test')
+// const date = document.querySelector('#button-container > input')
+// const img = document.querySelector('#button-container > img')
+// date.addEventListener('change', ()=>{
+//     console.log(`${date.value} = ${now}`)
+//     console.log(isBefore(date.value, now))
+// })

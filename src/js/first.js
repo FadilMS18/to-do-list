@@ -23,4 +23,3 @@ function addProjectContent(title){
 }
 
 export { addProjectContent }
-

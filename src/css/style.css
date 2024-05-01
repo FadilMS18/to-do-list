@@ -28,9 +28,10 @@
 }
 
 body{
-    height: 1000vh;
+    /* height: 1000vh; */
     /* background-image: linear-gradient(to right bottom, #F4EEFF, #DCD6F7, #A6B1E1, #424874); */
     background-color: rgb(55, 55, 55);
+    overflow: hidden;
 
 }
 

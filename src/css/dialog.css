@@ -55,7 +55,7 @@ input:focus, textarea:focus{
     color: rgb(215, 215, 215);
 }
 
-#project-name:focus, #project-form > textarea:focus, #date:focus, #select-dif:focus{
+#project-name:focus, #project-form > textarea:focus, #date-input:focus, #select-dif:focus{
     transform: scale(1.01);
     background-color: black;
     color: var(--TerTierOne);
@@ -69,7 +69,7 @@ input:focus, textarea:focus{
     transition: .25s;
 }
 
-#date, #select-dif{
+#date-input, #select-dif{
     color: var(--FontOne);
     background-color: var(--TerTierOne);
     padding:10px 25px;
@@ -81,7 +81,7 @@ input:focus, textarea:focus{
     transition: .25s;
     cursor: pointer;
 }
-#date::-webkit-calendar-picker-indicator {
+#date-input::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
 

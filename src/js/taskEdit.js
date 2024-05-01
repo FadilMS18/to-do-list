@@ -1,5 +1,6 @@
 import { editImage, readImage, deleteImage } from "./svg"
 import { makeAnElement, appendMe, editTask, projects } from "./newProject"
+import { format } from "date-fns"
 
 const tasks = Array.from(document.querySelectorAll('.tasks'))
 let body = document.body
@@ -7,26 +8,26 @@ let body = document.body
 let manyTask = []
 
 
-function newTask(){
-    const dial = makeDialog()
-    const content = makeAContent('', '', false)
-    dial.appendChild(content.container)
-    body.appendChild(dial)
-    dial.showModal()
+// function newTask(){
+//     const dial = makeDialog()
+//     const content = makeAContent('', '', false)
+//     dial.appendChild(content.container)
+//     body.appendChild(dial)
+//     dial.showModal()
 
-    content.container.addEventListener('submit', (e)=>{
-        e.preventDefault()
-        let centerMain = document.getElementById('center-main')
-        if(document.getElementById('no-task-heading')){ centerMain.removeChild(document.getElementById('no-task-heading'))}
+//     content.container.addEventListener('submit', (e)=>{
+//         e.preventDefault()
+//         let centerMain = document.getElementById('center-main')
+//         if(document.getElementById('no-task-heading')){ centerMain.removeChild(document.getElementById('no-task-heading'))}
 
-        const title = content.container.querySelector('#project-name')
-        centerMain.appendChild(newTaskDOM(title.value))
-        tasks.push(newTaskDOM(title.value))
-        if(tasks.length >= 3){ centerMain.classList.add('scroll')}
-        dial.close()
-        setTimeout(bodyRemoveDial, 501)
-    })
-}
+//         const title = content.container.querySelector('#project-name')
+//         centerMain.appendChild(newTaskDOM(title.value))
+//         tasks.push(newTaskDOM(title.value))
+//         if(tasks.length >= 3){ centerMain.classList.add('scroll')}
+//         dial.close()
+//         setTimeout(bodyRemoveDial, 501)
+//     })
+// }
 
 function makeDialog(){
     const dial = document.createElement('dialog')
@@ -36,7 +37,7 @@ function makeDialog(){
 }
 
 
-function makeAContent(name, desc, read = true){
+function makeAContent(name, desc, dueTo, option = 'easy', read = true){
     const _form = document.createElement('form')
     _form.setAttribute('id', 'project-form') 
 
@@ -58,9 +59,35 @@ function makeAContent(name, desc, read = true){
     _description.setAttribute('placeholder', 'Task Description')
     _description.value = desc
 
+    const _dateDue = makeAnElement('input', 'date-input')
+    _dateDue.setAttribute('type', 'date')
+    _dateDue.required = true
+    _dateDue.value = dueTo
+
+    const _select = makeAnElement('select', 'select-dif')
+    const opt1 = makeAnElement('option')
+    opt1.setAttribute('value', 'easy')
+    opt1.textContent = '-- Select the priority --'
+
+    const opt2 = makeAnElement('option')
+    opt2.setAttribute('value', 'hard')
+    opt2.textContent = 'Important'
+
+    const opt3 = makeAnElement('option')
+    opt3.setAttribute('value', 'medium')
+    opt3.textContent = 'Not That Important'
+
+    const opt4 = makeAnElement('option')
+    opt4.setAttribute('value', 'easy')
+    opt4.textContent = 'Optional'
+    appendMe(_select, opt1, opt2, opt3, opt4)
+    _select.value = option
+
     if(read === 'read'){
         _input.readOnly = true
         _description.readOnly = true
+        _dateDue.readOnly = true
+        _select.disabled = true
         _h2.textContent = 'Task Read'
     }else if(read === 'edit'){
         _h2.textContent = 'Task Edit' 
@@ -71,7 +98,7 @@ function makeAContent(name, desc, read = true){
     _button.setAttribute('type', 'submit')
     _button.setAttribute('id', 'project-confirm')
 
-    appendMe(_form, _h2, _input, _description, _button)
+    appendMe(_form, _h2, _input, _description, _dateDue, _select,  _button)
 
     return {
         get container(){
@@ -86,6 +113,12 @@ function makeAContent(name, desc, read = true){
         get script(){
             return _description
         },
+        get dateDue(){
+            return _dateDue
+        },
+        get difficulty(){
+            return _select
+        },
         get button(){
             return _button
         }
@@ -98,112 +131,52 @@ function bodyRemoveDial(){
     body.removeChild(dialogs[1])
 }
 
-function newTaskDOM(taskTitle, dueTo = '2024-20-12'){
+function newTaskDOM(taskTitle, dueTo, dif){
     const taskContainer = makeAnElement('div', '', 'tasks')
+
+    const difMeter = makeAnElement('span', 'dif-meter')
+    diffMeterValue(difMeter, dif)
+
 
     const title = makeAnElement('p', 'task-name')
     title.textContent = taskTitle
 
     const buttonContainer = makeAnElement('div', 'button-container')
     
-    const date = makeAnElement('p', '')
-    date.textContent = dueTo
+    const date = makeAnElement('p', 'date')
+    date.textContent = format(dueTo, 'dd-MM-yyyy')
 
     const edit = makeAnElement('img', 'edit-task')
     edit.src = editImage
    
-    const read = document.createElement('img', 'read-task')
+    const read = makeAnElement('img', 'read-task')
     read.src = readImage
  
     const erase = makeAnElement('img', 'delete-task')
     erase.src = deleteImage
  
     appendMe(buttonContainer, date, edit, read, erase)
-    appendMe(taskContainer, title, buttonContainer)
-
-    // edit.addEventListener('click', ()=>{
-    //     let task = edit.parentNode.parentNode
-    //     let taskName = task.querySelector('#task-name')
-    //     let content = makeAContent(taskName.textContent, 'testing here', false)
-    //     const dial = makeDialog()
-    //     dial.appendChild(content.container)
-    //     body.appendChild(dial)
-    //     dial.showModal()
-
-    //     content.container.addEventListener('submit', (e)=>{
-    //         e.preventDefault()
-    //         taskName.textContent = content.title.value
-    //         dial.close()
-    //         setTimeout(bodyRemoveDial, 501)
-    //         console.log(projects.tasks)
-    //     })        
-    // })
-
-    read.addEventListener('click', ()=>{
-        let task = read.parentNode.parentNode
-        let taskName = task.querySelector('#task-name')
-        let content = makeAContent(taskName.textContent, 'testing here', true)
-        const dial = makeDialog()
-        dial.appendChild(content.container)
-        body.appendChild(dial)
-        dial.showModal()
-
-        content.container.addEventListener('submit', (e)=>{
-            e.preventDefault()
-            taskName.textContent = content.title.value
-            dial.close()
-            setTimeout(bodyRemoveDial, 501)
-        })        
-    })
-
-    erase.addEventListener('click', ()=>{
-        let task = erase.parentNode.parentNode
-        task.classList.add('erase')
-        setTimeout(()=>{
-            document.querySelector('#center-main').removeChild(task)
-        },401)
-        
-        
-    })
+    appendMe(taskContainer, difMeter, title, buttonContainer)
 
     return taskContainer
 
 }
     
-tasks.forEach(task =>{
-    let para = task.querySelector('#task-name') 
-    const edit = task.querySelector('#edit-task')
-    const read = task.querySelector('#read-task')
-    
-    const dial = makeDialog()
+function diffMeterValue(ele, meter){
+    switch (meter){
+        case 'easy':
+            ele.classList.value = 'easy'
+            break;
+        case 'medium':
+            ele.classList.value = 'medium'
+            break;
+        case 'hard':
+            ele.classList.value = 'hard'
+            break;    
+        default:
+            break;
+    }
+}
 
-    edit.addEventListener('click', ()=>{
-        let content = makeAContent(para.textContent, 'testing edit button', false)
-        body.appendChild(dial)
-        dial.appendChild(content.container)
-        dial.showModal()
-            
-        content.container.addEventListener('submit', (e)=>{
-            e.preventDefault()
-            para.textContent = content.title.value
-            dial.close()
-            setTimeout(bodyRemoveDial ,501)    
-        })            
-    })
 
-    read.addEventListener('click', ()=>{
-        let content = makeAContent(para.textContent, 'testing edit button')
-        body.appendChild(dial)
-        dial.appendChild(content.container)
-        dial.showModal()
-            
-        content.container.addEventListener('submit', (e)=>{
-            e.preventDefault()
-            para.textContent = content.title.value
-            dial.close()
-            setTimeout(bodyRemoveDial ,501)    
-        })
-    })
-})
-
-export {tasks, newTask, makeAContent, newTaskDOM, bodyRemoveDial}
+export {tasks,  makeAContent, newTaskDOM, bodyRemoveDial, diffMeterValue}
