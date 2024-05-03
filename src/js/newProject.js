@@ -1,7 +1,9 @@
 import { addProjectContent } from "./first"
 import { donutCat as cat } from "./svg"
-import { makeAContent, newTaskDOM, manyTask, bodyRemoveDial, diffMeterValue } from "./taskEdit"
-import { format } from "date-fns"
+import { makeAContent, newTaskDOM, bodyRemoveDial, diffMeterValue, dateRange } from "./taskEdit"
+import { differenceInCalendarDays, format } from "date-fns"
+import { pushTask, todayOrUpcoming } from "./checkDueTo"
+import { timeButton } from "./allTaskDOM"
 
 
 const projectDialog = document.querySelector('#project-dialog')
@@ -16,6 +18,10 @@ const body = document.body
 // window.addEventListener('DOMContentLoaded', projectModal)
 
 let projects = []
+let todayTask = []
+let upcomingTask = []
+let allTask = []
+let importantTask = []
 
 
 class Project {
@@ -64,6 +70,9 @@ function submitProject(event){
                     div.classList.remove('focus')
                 }
             })
+            timeButton.forEach(button =>{
+                if(button.classList.contains('fokus')){button.classList.remove('fokus')}
+            })
             project.classList.add('focus')
 
             // console.log(projects[index])
@@ -79,7 +88,7 @@ function submitProject(event){
 
             const topMain = makeAnElement('div', 'top-main')
             const title = makeAnElement('h2', '')
-            title.textContent = object.name
+            title.textContent = `Project ${object.name}`
             const donutCat = makeAnElement('img', '')
             donutCat.src = cat
             appendMe(topMain, title, donutCat)
@@ -90,7 +99,7 @@ function submitProject(event){
             newTaskButton.textContent = 'Add Task'
             appendMe(mainDiv, topMain, centerMain, newTaskButton)
             body.insertBefore(main, dialogAnchor)
-            displayTask(index)
+            displayProjectTask(index)
 
             if(!object.tasks.length){
                 centerMain.appendChild(noTasksHeading())
@@ -110,9 +119,24 @@ function submitProject(event){
                         desc : content.container.querySelector('#project-description').value,
                         dueTo : content.container.querySelector('#date-input').value,
                         dif: content.container.querySelector('#select-dif').value,
+                        projectIndex : index,
+                        taskStatus : false,
 
                     }
                     projects[index].tasks.push(task)
+                    /* mengirim task baru ke array baru baik itu 
+                        pushTask(task.dueTo, task)
+                        console.log(todayTask)
+                        console.log(upcomingTask)
+                    
+                    */
+                //    pushTask(task.dueTo, task.dif, task)
+                //    console.log(importantTask)
+                    todayUpcomingTaskUpdate(projects, index)
+                    // console.log(todayTask)
+                    // console.log(upcomingTask)
+                    // console.log(allTask)
+                    
                     if(projects[index].tasks.length > 6 && !centerMain.classList.contains('scroll')){
                         centerMain.classList.add('scroll')
                     }
@@ -120,7 +144,8 @@ function submitProject(event){
                         centerMain.classList.remove('scroll')
                     }
                     console.log(projects[index].tasks)
-                    displayTask(index)
+
+                    displayProjectTask(index)
                     dialog.close()                    
                     setTimeout(bodyRemoveDial, 501)
                 })
@@ -132,43 +157,26 @@ function submitProject(event){
     projectDialog.close()
 }
 
-function displayTask(projectIndex){
+function displayProjectTask(projectIndex){
     const container = document.getElementById('center-main')
     container.innerHTML = ''
-    newTask(container, projectIndex) 
+    newTask(container, projectIndex)
 }
+
 
 function newTask(container, projectIndex){
     projects[projectIndex].tasks.forEach((task, taskIndex) =>{
-        const li =  newTaskDOM(task.name, task.dueTo, task.dif)
-        li.querySelector('#edit-task').addEventListener('click', ()=>{
-            editButton(li, projectIndex, task, taskIndex, 'edit')       
-            // const difMeter = li.querySelector('#dif-meter')
-            // const taskName = li.querySelector('#task-name')
-            // const date = li.querySelector('#date')
-            // const content = makeAContent(taskName.textContent, task.desc, task.dueTo, task.dif , 'edit')
-            // const dialog = makeAnElement('dialog', 'project-dialog')
-            // dialog.appendChild(content.container)
-            // body.appendChild(dialog)
-            // dialog.showModal()
-            
-            // content.container.addEventListener('submit', (e)=>{
-            //     e.preventDefault()
-            //     taskName.textContent = content.title.value
-            //     date.textContent = format(content.dateDue.value, 'dd-MM-yyyy')
-            //     diffMeterValue(difMeter, content.difficulty.value)
-            //     projects[projectIndex].tasks[taskIndex].name = content.title.value
-            //     projects[projectIndex].tasks[taskIndex].desc = content.script.value
-            //     projects[projectIndex].tasks[taskIndex].dueTo = content.dateDue.value
-            //     projects[projectIndex].tasks[taskIndex].dif = content.difficulty.value
-                
-            //     dialog.close()
-            //     setTimeout(bodyRemoveDial, 501);
+        task.index = taskIndex
+        const li =  newTaskDOM(task.name, task.dueTo, task.dif, task.taskStatus)
+        li.querySelector('#finish-task').addEventListener('click', ()=>{
+            finishTask(li, projectIndex, taskIndex)
+        })
 
-            // })
+        li.querySelector('#edit-task').addEventListener('click', ()=>{
+            readEditButton(li, projectIndex, task, taskIndex, 'edit')       
         })
         li.querySelector('#read-task').addEventListener('click', ()=>{
-            editButton(li, projectIndex, task, taskIndex, 'read')  
+            readEditButton(li, projectIndex, task, taskIndex, 'read')  
         })
         li.querySelector('#delete-task').addEventListener('click', ()=>{
             const centerMain = document.getElementById('center-main')
@@ -189,6 +197,74 @@ function newTask(container, projectIndex){
     })
 }
 
+
+function readEditButton(parent, parentIndex, object, objectIndex, status){
+    const difMeter = parent.querySelector('#dif-meter')
+    const taskName = parent.querySelector('#task-name')
+    const date = parent.querySelector('#date')
+    const content = makeAContent(taskName.textContent, object.desc, object.dueTo, object.dif , status)
+    const dialog = makeAnElement('dialog', 'project-dialog')
+    dialog.appendChild(content.container)
+    body.appendChild(dialog)
+    dialog.showModal()
+            
+    content.container.addEventListener('submit', (e)=>{
+        e.preventDefault()
+        taskName.textContent = content.title.value
+        date.textContent = format(content.dateDue.value, 'dd-MM-yyyy')     
+        dateRange(date, differenceInCalendarDays(content.dateDue.value, new Date()))
+        diffMeterValue(difMeter, content.difficulty.value, object.taskStatus)
+        console.log(content.dateDue.value)
+        console.log(differenceInCalendarDays(content.dateDue.value, new Date()))
+        if(status === 'edit'){
+            editFunction(parentIndex, objectIndex, content)
+        }
+        dialog.close()
+        setTimeout(bodyRemoveDial, 501);
+    })
+}
+
+function finishTask(ele, parentIndex, objectIndex){
+    const element = ele
+    const dif = ele.querySelector('#dif-meter')
+    if(ele.classList.contains('complete')){
+        ele.classList.remove('complete')
+        dif.classList.remove('complete')
+        changeFinishStatus(parentIndex, objectIndex, false)
+    }else{
+        ele.classList.add('complete')
+        dif.classList.add('complete')
+        changeFinishStatus(parentIndex, objectIndex, true)
+    }
+}
+
+function changeFinishStatus(parentIndex, objectIndex, status){
+    projects[parentIndex].tasks[objectIndex].taskStatus = status 
+}
+
+function editFunction(parentIndex, objectIndex, contentObject){
+    projects[parentIndex].tasks[objectIndex].name = contentObject.title.value
+    projects[parentIndex].tasks[objectIndex].desc = contentObject.script.value
+    projects[parentIndex].tasks[objectIndex].dueTo = contentObject.dateDue.value
+    projects[parentIndex].tasks[objectIndex].dif = contentObject.difficulty.value
+}
+
+function deleteTask(parentIndex, objectIndex){
+    let removeTask = projects[parentIndex].tasks[objectIndex]
+    projects[parentIndex]._tasks = projects[parentIndex]._tasks.filter(task => task !== removeTask)  
+    // console.log(projects[parentIndex].tasks)
+    setTimeout(todayUpcomingTaskUpdate(projects), 500)
+    console.log(todayTask)
+    console.log(upcomingTask)
+}
+
+
+function noTasksHeading(){
+    const h3 = makeAnElement('h3', 'no-task-heading')
+    h3.style.textAlign = 'center'
+    h3.textContent = "You Don't Have any task here yet"
+    return h3
+}
 
 function makeAnElement(eleName, id = '' , group = ''){
     const element = document.createElement(eleName)
@@ -213,49 +289,31 @@ function editTask(){
     console.log(projects)
 }
 
-function editButton(parent, parentIndex, object, objectIndex, status){
-    const difMeter = parent.querySelector('#dif-meter')
-    const taskName = parent.querySelector('#task-name')
-    const date = parent.querySelector('#date')
-    const content = makeAContent(taskName.textContent, object.desc, object.dueTo, object.dif , status)
-    const dialog = makeAnElement('dialog', 'project-dialog')
-    dialog.appendChild(content.container)
-    body.appendChild(dialog)
-    dialog.showModal()
-            
-    content.container.addEventListener('submit', (e)=>{
-        e.preventDefault()
-        taskName.textContent = content.title.value
-        date.textContent = format(content.dateDue.value, 'dd-MM-yyyy')
-        diffMeterValue(difMeter, content.difficulty.value)
-        if(status === 'edit'){
-            editFunction(parentIndex, objectIndex, content)
+function todayUpcomingTaskUpdate(array){
+    todayTask = []
+    upcomingTask = []
+    allTask = []
+    array.forEach(arr =>{
+        if(arr.tasks.length){
+            arr.tasks.forEach(task =>{
+                allTask.push(task)
+                switch(todayOrUpcoming(task.dueTo)){
+                    case 'today':
+                        todayTask.push(task)
+                        break;
+                    case 'upcoming':
+                        upcomingTask.push(task)
+                        break;    
+                }
+            })
         }
-        dialog.close()
-        setTimeout(bodyRemoveDial, 501);
     })
 }
 
-function editFunction(parentIndex, objectIndex, contentObject){
-    projects[parentIndex].tasks[objectIndex].name = contentObject.title.value
-    projects[parentIndex].tasks[objectIndex].desc = contentObject.script.value
-    projects[parentIndex].tasks[objectIndex].dueTo = contentObject.dateDue.value
-    projects[parentIndex].tasks[objectIndex].dif = contentObject.difficulty.value
-}
-
-function deleteTask(parentIndex, objectIndex){
-    let removeTask = projects[parentIndex].tasks[objectIndex]
-    projects[parentIndex]._tasks = projects[parentIndex]._tasks.filter(task => task !== removeTask)  
-    console.log(projects[parentIndex].tasks)
-}
+/*
+    Terakhir kali kita menambahkan project index dan task index kedalam task project
+*/ 
 
 
-function noTasksHeading(){
-    const h3 = makeAnElement('h3', 'no-task-heading')
-    h3.style.textAlign = 'center'
-    h3.textContent = "You Don't Have any task here yet"
-    return h3
-}
-
-export { projectModal, makeAnElement, appendMe, editTask , projects} 
+export { projectModal, makeAnElement, appendMe, editTask , projects, todayTask, upcomingTask, importantTask, allTask, readEditButton, noTasksHeading} 
 

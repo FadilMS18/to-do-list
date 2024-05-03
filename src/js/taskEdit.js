@@ -1,12 +1,9 @@
-import { editImage, readImage, deleteImage } from "./svg"
+import { editImage, readImage, deleteImage, finishImage } from "./svg"
 import { makeAnElement, appendMe, editTask, projects } from "./newProject"
-import { format } from "date-fns"
+import { differenceInCalendarDays, format } from "date-fns"
 
-const tasks = Array.from(document.querySelectorAll('.tasks'))
 let body = document.body
-
-let manyTask = []
-
+let today = new Date()
 
 // function newTask(){
 //     const dial = makeDialog()
@@ -28,13 +25,6 @@ let manyTask = []
 //         setTimeout(bodyRemoveDial, 501)
 //     })
 // }
-
-function makeDialog(){
-    const dial = document.createElement('dialog')
-    dial.setAttribute('id' ,'project-dialog')
-
-    return dial
-}
 
 
 function makeAContent(name, desc, dueTo, option = 'easy', read = true){
@@ -131,12 +121,10 @@ function bodyRemoveDial(){
     body.removeChild(dialogs[1])
 }
 
-function newTaskDOM(taskTitle, dueTo, dif){
+function newTaskDOM(taskTitle, dueTo, dif, finishStatus){
     const taskContainer = makeAnElement('div', '', 'tasks')
 
     const difMeter = makeAnElement('span', 'dif-meter')
-    diffMeterValue(difMeter, dif)
-
 
     const title = makeAnElement('p', 'task-name')
     title.textContent = taskTitle
@@ -145,6 +133,11 @@ function newTaskDOM(taskTitle, dueTo, dif){
     
     const date = makeAnElement('p', 'date')
     date.textContent = format(dueTo, 'dd-MM-yyyy')
+    let daysDif = differenceInCalendarDays(dueTo, new Date())
+    dateRange(date, daysDif)
+
+    const finish = makeAnElement('img', 'finish-task')
+    finish.src = finishImage
 
     const edit = makeAnElement('img', 'edit-task')
     edit.src = editImage
@@ -155,14 +148,16 @@ function newTaskDOM(taskTitle, dueTo, dif){
     const erase = makeAnElement('img', 'delete-task')
     erase.src = deleteImage
  
-    appendMe(buttonContainer, date, edit, read, erase)
+    appendMe(buttonContainer, date, finish, edit, read, erase)
     appendMe(taskContainer, difMeter, title, buttonContainer)
+
+    diffMeterValue(difMeter, dif, finishStatus)
 
     return taskContainer
 
 }
     
-function diffMeterValue(ele, meter){
+function diffMeterValue(ele, meter, finishStatus){
     switch (meter){
         case 'easy':
             ele.classList.value = 'easy'
@@ -176,7 +171,23 @@ function diffMeterValue(ele, meter){
         default:
             break;
     }
+    if(finishStatus){
+        ele.classList.add('complete')
+        ele.parentNode.classList.add('complete')
+    }else{
+        ele.classList.remove('complete')
+        ele.parentNode.classList.remove('complete')
+    }
 }
 
+function dateRange(ele, comparison){
+    if(comparison < 0){
+        ele.classList.value = 'past-day'
+    }else if(comparison >= 0 && comparison <= 1){
+        ele.classList.value = 'deadline'
+    }else if(comparison >= 2 && comparison <= 7){
+        ele.classList.value = 'one-week'
+    }else { ele.classList.value = 'more-than-a-week' }
+}
 
-export {tasks,  makeAContent, newTaskDOM, bodyRemoveDial, diffMeterValue}
+export {makeAContent, newTaskDOM, bodyRemoveDial, diffMeterValue, dateRange}

@@ -8,8 +8,6 @@ import { test } from './js/allTaskDOM'
 
 const body = document.body
 
-console.log(mar)
-
 function makeNavbar(){
     const nav = document.createElement('nav')
     nav.classList.add('nav')
@@ -46,13 +44,6 @@ function makeSideBar(){
     return side
 }
 
-// Dark Button 
-document.querySelector('#dark-button-container').addEventListener('click', ()=>{
-    let ball = document.querySelector('#ball')    
-    ball.classList.contains('translate-right') ? ball.classList.remove('translate-right') 
-    : ball.classList.add('translate-right')
-})
-
 // Sidebar left & right
 const sideBarOpener = document.querySelector('#sidebar-opener')
 
@@ -76,6 +67,3 @@ addNewProject.addEventListener('click', projectModal)
 
 
 
-//  tasks for edit read and delete,add new task
-// const newTaskButton = document.getElementById('new-task-button')
-// newTaskButton.addEventListener('click', newTask)

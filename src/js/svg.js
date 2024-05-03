@@ -23,7 +23,8 @@ const manySvg = [
     simCard,transportation,video,weather
 ]
 
-// Edit, read, delete
+// finish, Edit, read, delete
+const finishImage = require('./../img/svg/checklist-check-yes-svgrepo-com.svg')
 const editImage = require('./../img/svg/edit-content-svgrepo-com.svg')
 const readImage = require('./../img/svg/read-svgrepo-com.svg')
 const deleteImage = require('./../img/svg/trash-delete-bin-svgrepo-com.svg')
@@ -32,4 +33,4 @@ const deleteImage = require('./../img/svg/trash-delete-bin-svgrepo-com.svg')
 
 const donutCat = require('./../img/gif/rainbow-donut-cat.gif')
 
-export {article, pencil, schedule, simCard, manySvg, editImage, readImage, deleteImage, donutCat}
+export {article, pencil, schedule, simCard, manySvg,finishImage, editImage, readImage, deleteImage, donutCat}

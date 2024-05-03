@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
 <body> 
     <nav id="nav">
         <h1>To-Do-List</h1>
         <div id="nav-right-section">
-            <div id="dark-button-container">
-                <button id="dark-button">
-                    <span id="ball"></span>
-                </button>
-                
-            </div>
-            <p>18-04-2024</p>
+            <p id="today-date">
+                Today is<br>
+                <span>date here</span>
+            </p>
         </div>
     </nav>
 
@@ -25,7 +25,7 @@
         <div id="top-sidebar">
             <button class="due-to-button">All</button>
             <button class="due-to-button">Today</button>
-            <button class="due-to-button">Next Week</button>
+            <button class="due-to-button">Upcoming</button>
         </div>
 
         <h2 id="projects-legend">Projects</h2>

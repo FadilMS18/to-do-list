@@ -1,11 +1,12 @@
+import { format } from 'date-fns'
 import {manySvg as svg} from './svg'
-export let x = 'this is from first.js'
-
 
 function pickRandomImg(){
     return svg[Math.floor(Math.random() * svg.length)]
 }
 
+const todayDateReminder = document.querySelector('#today-date > span') 
+todayDateReminder.innerHTML = format(new Date(), 'EEE dd MM yyyy')
 
 function addProjectContent(title){
     const div = document.createElement('div')
@@ -22,4 +23,5 @@ function addProjectContent(title){
     return div
 }
 
+export let x = 'this is from first.js'
 export { addProjectContent }
