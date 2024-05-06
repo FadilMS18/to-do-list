@@ -66,4 +66,3 @@ const addNewProject = document.querySelector('#add-new-project')
 addNewProject.addEventListener('click', projectModal)
 
 
-

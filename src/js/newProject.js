@@ -1,9 +1,9 @@
 import { addProjectContent } from "./first"
 import { donutCat as cat } from "./svg"
 import { makeAContent, newTaskDOM, bodyRemoveDial, diffMeterValue, dateRange } from "./taskEdit"
-import { differenceInCalendarDays, format } from "date-fns"
-import { pushTask, todayOrUpcoming } from "./checkDueTo"
-import { timeButton } from "./allTaskDOM"
+import { add, differenceInCalendarDays, format } from "date-fns"
+import { checkImportant, todayOrUpcoming } from "./checkDueTo"
+import { timeButton, additionalTask } from "./allTaskDOM"
 
 
 const projectDialog = document.querySelector('#project-dialog')
@@ -124,18 +124,9 @@ function submitProject(event){
 
                     }
                     projects[index].tasks.push(task)
-                    /* mengirim task baru ke array baru baik itu 
-                        pushTask(task.dueTo, task)
-                        console.log(todayTask)
-                        console.log(upcomingTask)
-                    
-                    */
-                //    pushTask(task.dueTo, task.dif, task)
-                //    console.log(importantTask)
+
                     todayUpcomingTaskUpdate(projects, index)
-                    // console.log(todayTask)
-                    // console.log(upcomingTask)
-                    // console.log(allTask)
+                    
                     
                     if(projects[index].tasks.length > 6 && !centerMain.classList.contains('scroll')){
                         centerMain.classList.add('scroll')
@@ -161,6 +152,8 @@ function displayProjectTask(projectIndex){
     const container = document.getElementById('center-main')
     container.innerHTML = ''
     newTask(container, projectIndex)
+    console.log(projects)
+    console.log(importantTask)
 }
 
 
@@ -179,19 +172,7 @@ function newTask(container, projectIndex){
             readEditButton(li, projectIndex, task, taskIndex, 'read')  
         })
         li.querySelector('#delete-task').addEventListener('click', ()=>{
-            const centerMain = document.getElementById('center-main')
-            li.classList.add('erase')
-            setTimeout(()=>{
-                deleteTask(projectIndex, taskIndex)
-                centerMain.removeChild(li)
-                
-                setTimeout(() => {
-                    if(!projects[projectIndex].tasks.length){
-                        console.log(true)
-                        centerMain.appendChild(noTasksHeading())
-                    }else{console.log(false)}
-                },1)
-            },499);
+            handleDeleteTask(li, task)  
         })
         container.appendChild(li)
     })
@@ -249,10 +230,23 @@ function editFunction(parentIndex, objectIndex, contentObject){
     projects[parentIndex].tasks[objectIndex].dif = contentObject.difficulty.value
 }
 
-function deleteTask(parentIndex, objectIndex){
+function handleDeleteTask(element, object){
+    const centerMain = document.getElementById('center-main')
+    element.classList.add('erase')
+    setTimeout(()=>{
+            deleteProjectTask(object.projectIndex, object.index)
+            centerMain.removeChild(element)
+            setTimeout(() => {
+                if(!projects[object.projectIndex].tasks.length){
+                    centerMain.appendChild(noTasksHeading())
+                }
+            },1)
+    },499);
+}
+
+function deleteProjectTask(parentIndex, objectIndex){
     let removeTask = projects[parentIndex].tasks[objectIndex]
     projects[parentIndex]._tasks = projects[parentIndex]._tasks.filter(task => task !== removeTask)  
-    // console.log(projects[parentIndex].tasks)
     setTimeout(todayUpcomingTaskUpdate(projects), 500)
     console.log(todayTask)
     console.log(upcomingTask)
@@ -289,10 +283,15 @@ function editTask(){
     console.log(projects)
 }
 
+function pushIt(receiver, pusher){
+    pusher.forEach(ele =>{
+        receiver.push(ele)
+    })
+}
+
 function todayUpcomingTaskUpdate(array){
-    todayTask = []
-    upcomingTask = []
-    allTask = []
+    
+    pushTask(additionalTask)
     array.forEach(arr =>{
         if(arr.tasks.length){
             arr.tasks.forEach(task =>{
@@ -305,15 +304,34 @@ function todayUpcomingTaskUpdate(array){
                         upcomingTask.push(task)
                         break;    
                 }
+                checkImportant(task.dif, task)
             })
         }
     })
 }
 
-/*
-    Terakhir kali kita menambahkan project index dan task index kedalam task project
-*/ 
+function pushTask(array){
+    todayTask = []
+    upcomingTask = []
+    allTask = []
+    importantTask = []
 
+    if(array.length){
+        array.forEach((task, index) => {
+            task.index = index
+            allTask.push(task)
+            switch(todayOrUpcoming(task.dueTo)){
+                case 'today':
+                    todayTask.push(task)
+                    break;
+                case 'upcoming':
+                    upcomingTask.push(task)
+                    break;    
+            }
+            checkImportant(task.dif, task)
+        })
+    }
+}
 
-export { projectModal, makeAnElement, appendMe, editTask , projects, todayTask, upcomingTask, importantTask, allTask, readEditButton, noTasksHeading} 
+export { projectModal,finishTask, pushTask, bodyRemoveDial, makeAnElement, appendMe, editTask , projects, todayTask, upcomingTask, importantTask, allTask, readEditButton, noTasksHeading, handleDeleteTask} 
 

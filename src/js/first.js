@@ -6,7 +6,7 @@ function pickRandomImg(){
 }
 
 const todayDateReminder = document.querySelector('#today-date > span') 
-todayDateReminder.innerHTML = format(new Date(), 'EEE dd MM yyyy')
+todayDateReminder.innerHTML = format(new Date(), 'EEE dd MMMM yyyy')
 
 function addProjectContent(title){
     const div = document.createElement('div')

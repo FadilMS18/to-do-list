@@ -18,22 +18,17 @@ function todayOrUpcoming(date){
 
 console.log(daysDifference(new Date()) === 0)
 
-function pushTask(dueTo, meter, task){
-    let difference = differenceInCalendarDays(dueTo, new Date())
 
-    if(difference === 0){
-        todayTask.push(task)
-    }else if(difference >= 1){
-        upcomingTask.push(task)
-    }
-
-    pushImportant(meter, task)
+function important(difMeter){
+    if(difMeter === 'hard'){
+        return true
+    }else return false
 }
 
-function pushImportant(difMeter, task){
-    if(difMeter === 'hard'){
+function checkImportant(difMeter, task){
+    if(important(difMeter)){
         importantTask.push(task)
     }
 }
 
-export {pushTask, todayOrUpcoming}
+export {todayOrUpcoming, checkImportant}

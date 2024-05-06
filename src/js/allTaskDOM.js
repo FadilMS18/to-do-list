@@ -1,10 +1,11 @@
 import {differenceInCalendarDays, format, isAfter, isBefore, isDate, isFuture } from "date-fns"
-import { readEditButton, allTask, upcomingTask, importantTask, noTasksHeading, todayTask } from "./newProject"
-import { newTaskDOM } from "./taskEdit"
+import { readEditButton, finishTask, pushTask, bodyRemoveDial, handleDeleteTask, allTask, upcomingTask, importantTask, noTasksHeading, todayTask, makeAnElement } from "./newProject"
+import { newTaskDOM, makeAContent } from "./taskEdit"
 export let test = 'test'
 // isAfter(isThisAfter, this)
 // differenceInCalenderDays(andThisDate, CompareThisDate)
 
+export const additionalTask = []
 
 export const timeButton = Array.from(document.querySelectorAll('.due-to-button'))
 timeButton.forEach(button =>{
@@ -25,13 +26,17 @@ timeButton.forEach(button =>{
 })
 
 timeButton[0].addEventListener('click', ()=>{
-    displayAllTask(allTask, timeButton[0].textContent)
+    displayAllTask(allTask, timeButton[0].textContent)   
 })
+
 timeButton[1].addEventListener('click', ()=>{
     displayAllTask(todayTask, timeButton[1].textContent)
 })
 timeButton[2].addEventListener('click', ()=>{
     displayAllTask(upcomingTask, timeButton[2].textContent)
+})
+timeButton[3].addEventListener('click', ()=>{
+    displayAllTask(importantTask, timeButton[3].textContent)
 })
 
 let now = new Date()
@@ -40,10 +45,19 @@ let tomorrow = new Date(2024, 4, 2)
 let today = format(now, 'dd-MM-yyyy')
 
 function displayAllTask(taskType, title){
-    document.querySelector('#top-main > h2').textContent = `${title} tasks`
+
+    document.querySelector('#top-main > h2').textContent = `${title} Tasks`
     const container = document.getElementById('center-main')
+    const mainContainer = container.parentNode
     container.innerHTML = ''
     showAllTask(container, taskType)
+    if(mainContainer.querySelector('#new-task-button')){
+        const removeButton = document.querySelector('#new-task-button')
+        mainContainer.removeChild(removeButton)
+    }
+    
+    
+
 }   
 
 function showAllTask(container, taskType){
@@ -54,12 +68,17 @@ function showAllTask(container, taskType){
             const li = newTaskDOM(task.name, task.dueTo, task.dif, task.taskStatus)
             const buttonContainer = li.querySelector('#button-container')
             let editButton = buttonContainer.querySelector('#edit-task')
-            let deleteButton = buttonContainer.querySelector('#delete-task')
             buttonContainer.removeChild(editButton)
-            buttonContainer.removeChild(deleteButton)
+
+            li.querySelector('#finish-task').addEventListener('click', ()=>{
+                finishTask(li, task.projectIndex, task.index)
+            })
 
             li.querySelector('#read-task').addEventListener('click', ()=>{
                 readEditButton(li, false, task, false, 'read')
+            })
+            li.querySelector('#delete-task').addEventListener('click', ()=>{
+                handleDeleteTask(li, task)
             })
             
             container.appendChild(li)
@@ -67,17 +86,6 @@ function showAllTask(container, taskType){
     }
 }
 
-const testDiv = document.getElementById('date-test')
-testDiv.addEventListener('click', ()=>{
-    const difMeter = testDiv.querySelector('#dif-meter')
-    if(difMeter.classList.contains('complete')){
-        difMeter.classList.remove('complete') 
-        testDiv.classList.remove('complete')
-    }else{
-        difMeter.classList.add('complete') 
-        testDiv.classList.add('complete');
-    }
-})
 
 
 
