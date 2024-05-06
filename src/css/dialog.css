@@ -86,6 +86,42 @@ input:focus, textarea:focus{
     filter: invert(1);
 }
 
+#select-icon{
+    display: grid;
+    gap:10px;
+    grid-template-columns: repeat(6, minmax(50px, 1fr));
+    grid-template-rows: 30px;
+    grid-auto-rows: 80px;
+
+    /* background-color: red; */
+}
+#select-icon > h3{
+    grid-column: 1/7;
+    color: var(--FontOne);
+}
+
+img.project-icon{
+    border: 2px solid black;
+    background-color: var(--TerTierOne);
+    border-radius: 3px;
+    transition: .25s;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, .25 );
+}   
+.project-icon:hover{
+    transform: scale(1.1);
+}
+img.project-icon.not-selected{
+    filter: opacity(.5) blur(1px);
+    transform: scale(.95);
+}
+img.project-icon.selected{
+    transform: scale(1.15);
+    box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, .35 );
+}
+
+
+
 #project-confirm{
     align-self: end;
     font-weight: bold;

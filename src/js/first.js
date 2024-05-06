@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import {manySvg as svg} from './svg'
+import {projectSvg as svg} from './svg'
 
 function pickRandomImg(){
     return svg[Math.floor(Math.random() * svg.length)]
@@ -8,12 +8,13 @@ function pickRandomImg(){
 const todayDateReminder = document.querySelector('#today-date > span') 
 todayDateReminder.innerHTML = format(new Date(), 'EEE dd MMMM yyyy')
 
-function addProjectContent(title){
+
+function addProjectContent(title, icon){
     const div = document.createElement('div')
     div.classList.add('project-content')
 
     const img = document.createElement('img')
-    img.setAttribute('src', pickRandomImg())
+    img.setAttribute('src', icon)
     div.appendChild(img)
 
     const h4 = document.createElement('h4')

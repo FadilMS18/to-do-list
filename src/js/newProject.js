@@ -1,5 +1,5 @@
 import { addProjectContent } from "./first"
-import { donutCat as cat } from "./svg"
+import { donutCat as cat, projectSvg } from "./svg"
 import { makeAContent, newTaskDOM, bodyRemoveDial, diffMeterValue, dateRange } from "./taskEdit"
 import { add, differenceInCalendarDays, format } from "date-fns"
 import { checkImportant, todayOrUpcoming } from "./checkDueTo"
@@ -12,7 +12,27 @@ const form = document.querySelector('#project-form')
 const projectName = document.querySelector('#project-name')
 const projectDescription = document.querySelector('#project-description')
 const projectContainer = document.querySelector('#projects-container')
+const projectIcons = Array.from(document.querySelectorAll('.project-icon'))
 const projectConfirm = document.querySelector('#project-confirm')
+
+console.log(projectIcons)
+
+projectIcons.forEach(icon =>{
+    icon.addEventListener('click', (e)=>{
+        if(e.target.classList.contains('selected')){
+            return
+        }
+        projectIcons.forEach(icons=>{
+            if(icons.classList.contains('selected')){
+                icons.classList.remove('selected')
+            }
+            icons.classList.add('not-selected')
+        })
+        e.target.classList.remove('not-selected')
+        e.target.classList.add('selected')
+    })
+})
+
 
 const body = document.body
 // window.addEventListener('DOMContentLoaded', projectModal)
@@ -25,9 +45,10 @@ let importantTask = []
 
 
 class Project {
-    constructor(projectName, projectDescription){
+    constructor(projectName, projectDescription, icon){
         this._projectName = projectName
         this._projectDescription = projectDescription
+        this._icon = icon
         this._tasks = []
     }
 
@@ -41,6 +62,9 @@ class Project {
     get tasks(){
         return this._tasks
     }
+    get icon(){
+        return this._icon
+    }
 }
 
 function submitProject(event){
@@ -50,15 +74,17 @@ function submitProject(event){
 
     let name = projectName.value
     let desc = projectDescription.value
+    let selectedIconIndex = document.querySelector('img.selected').getAttribute('value')
 
-    let newObj = new Project(name, desc)
+    let newObj = new Project(name, desc, selectedIconIndex)
     
     projectName.value = ''
     projectDescription.value = ''
+    resetProjectDialog(projectIcons, projectName, projectDescription)
 
     projects.push(newObj)
     projects.forEach((object, index)=>{
-        let project = addProjectContent(object.name)
+        let project = addProjectContent(object.name, projectSvg[object.icon])
     
         // projectDom.push(project)
         projectContainer.appendChild(project)
@@ -331,6 +357,16 @@ function pushTask(array){
             checkImportant(task.dif, task)
         })
     }
+}
+
+function resetProjectDialog(element, name, desc){
+    name.value = ''
+    desc.value = ''
+    let randomNumber = Math.floor(Math.random() * element.length)
+    for(let i = 0; i < element.length; i++){
+        element[i].classList.value = 'project-icon not-selected'
+    }
+    element[randomNumber].classList.value = 'project-icon selected'
 }
 
 export { projectModal,finishTask, pushTask, bodyRemoveDial, makeAnElement, appendMe, editTask , projects, todayTask, upcomingTask, importantTask, allTask, readEditButton, noTasksHeading, handleDeleteTask} 

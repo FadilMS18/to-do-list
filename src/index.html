@@ -61,18 +61,26 @@
         </div>
     </main> 
 
-    <dialog id="project-dialog" >
+    <dialog id="project-dialog"  >
         <form id="project-form" action="">
             <h2>New Project</h2>
             <input spellcheck="false" required autocomplete="off" type="text" maxlength="16" name="" id="project-name" placeholder="Project Name (16 Characters Max)">
             <textarea spellcheck="false" autocomplete="off" name="" id="project-description" cols="30" rows="10" placeholder="Add Project Description Here..."></textarea>
-            <!-- <input type="date" required name="" id="date-input">
-            <select name="" id="select-dif">
-                <option value="easy">-- Select the priority --</option>
-                <option value="hard">Important</option>
-                <option value="medium">Not That important</option>
-                <option value="easy">Optional</option>
-            </select> -->
+            <div id="select-icon">
+                <h3>Select The icon For Your Projects</h3>
+                <img value='0' src="./img//svg/article-svgrepo-com.svg" class="project-icon selected"></img>
+                <img value='1' src="./img/svg/badge-svgrepo-com.svg" class="project-icon not-selected"></img>
+                <img value='2' src="./img//svg/broadcast-svgrepo-com.svg" class="project-icon not-selected "></img>
+                <img value='3' src="./img//svg/camera-svgrepo-com.svg" class="project-icon not-selected "></img>
+                <img value='4' src="./img//svg/card-holder-svgrepo-com.svg" class="project-icon not-selected "></img>
+                <img value='5' src="./img//svg/cell-phone-svgrepo-com.svg" class="project-icon not-selected "></img>
+                <img value='6' src="./img//svg/coffee-svgrepo-com.svg" class="project-icon not-selected "></img>
+                <img value='7' src="./img//svg/collect-svgrepo-com.svg" class="project-icon not-selected "></img>
+                <img value='8' src="./img//svg/coupons-svgrepo-com.svg" class="project-icon not-selected "></img>
+                <img value='9' src="./img//svg/earphone-svgrepo-com.svg" class="project-icon not-selected "></img>
+                <img value='11' src="./img//svg/gas-station-svgrepo-com.svg" class="project-icon not-selected"></img>
+                <img value='11' src="./img//svg/gift-svgrepo-com.svg" class="project-icon not-selected"></img>
+            </div>
             <button autofocus id="project-confirm" type="submit">Confirm</button>
         </form>
     </dialog>
