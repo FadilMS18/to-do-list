@@ -1,31 +1,25 @@
 import { editImage, readImage, deleteImage, finishImage } from "./svg"
-import { makeAnElement, appendMe, editTask, projects } from "./newProject"
+import { makeAnElement, appendMe} from "./otherModule"
 import { differenceInCalendarDays, format } from "date-fns"
+import { diffMeterValue, dateRange } from "./checkDueTo";
 
 let body = document.body
-let today = new Date()
 
-// function newTask(){
-//     const dial = makeDialog()
-//     const content = makeAContent('', '', false)
-//     dial.appendChild(content.container)
-//     body.appendChild(dial)
-//     dial.showModal()
 
-//     content.container.addEventListener('submit', (e)=>{
-//         e.preventDefault()
-//         let centerMain = document.getElementById('center-main')
-//         if(document.getElementById('no-task-heading')){ centerMain.removeChild(document.getElementById('no-task-heading'))}
+function addProjectContent(title, icon){
+    const div = document.createElement('div')
+    div.classList.add('project-content')
 
-//         const title = content.container.querySelector('#project-name')
-//         centerMain.appendChild(newTaskDOM(title.value))
-//         tasks.push(newTaskDOM(title.value))
-//         if(tasks.length >= 3){ centerMain.classList.add('scroll')}
-//         dial.close()
-//         setTimeout(bodyRemoveDial, 501)
-//     })
-// }
+    const img = document.createElement('img')
+    img.setAttribute('src', icon)
+    div.appendChild(img)
 
+    const h4 = document.createElement('h4')
+    h4.textContent = title
+    div.appendChild(h4)
+
+    return div
+}
 
 function makeAContent(name, desc, dueTo, option = 'easy', read = true){
     const _form = document.createElement('form')
@@ -157,37 +151,6 @@ function newTaskDOM(taskTitle, dueTo, dif, finishStatus){
 
 }
     
-function diffMeterValue(ele, meter, finishStatus){
-    switch (meter){
-        case 'easy':
-            ele.classList.value = 'easy'
-            break;
-        case 'medium':
-            ele.classList.value = 'medium'
-            break;
-        case 'hard':
-            ele.classList.value = 'hard'
-            break;    
-        default:
-            break;
-    }
-    if(finishStatus){
-        ele.classList.add('complete')
-        ele.parentNode.classList.add('complete')
-    }else{
-        ele.classList.remove('complete')
-        ele.parentNode.classList.remove('complete')
-    }
-}
 
-function dateRange(ele, comparison){
-    if(comparison < 0){
-        ele.classList.value = 'past-day'
-    }else if(comparison >= 0 && comparison <= 1){
-        ele.classList.value = 'deadline'
-    }else if(comparison >= 2 && comparison <= 7){
-        ele.classList.value = 'one-week'
-    }else { ele.classList.value = 'more-than-a-week' }
-}
 
-export {makeAContent, newTaskDOM, bodyRemoveDial, diffMeterValue, dateRange}
+export {makeAContent, newTaskDOM, addProjectContent, bodyRemoveDial}

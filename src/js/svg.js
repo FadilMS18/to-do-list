@@ -10,13 +10,7 @@ const coupons = require('./../img/svg/coupons-svgrepo-com.svg')
 const earphone = require('./../img/svg/earphone-svgrepo-com.svg')
 const gasStation = require('./../img/svg/gas-station-svgrepo-com.svg')
 const gift = require('./../img/svg/gift-svgrepo-com.svg')
-const pencil = require('./../img/svg/pencil-revision-svgrepo-com.svg')
-const schedule = require('./../img/svg/schedule-svgrepo-com.svg')
-const shopping = require('./../img/svg/shopping-svgrepo-com.svg')
-const simCard = require('./../img/svg/sim-card-svgrepo-com.svg')
-const transportation = require('./../img/svg/transportation-svgrepo-com.svg')
-const video = require('./../img/svg/video-svgrepo-com.svg')
-const weather = require('./../img/svg/weather-svgrepo-com.svg')
+const leftOpener = require('./../img/svg/left-svgrepo-com.svg')
 
 const projectSvg = [
     article,badge,broadcast,camera, cardHolder,cellPhone, coffee,
@@ -33,4 +27,4 @@ const deleteImage = require('./../img/svg/trash-delete-bin-svgrepo-com.svg')
 
 const donutCat = require('./../img/gif/rainbow-donut-cat.gif')
 
-export {article, pencil, schedule, simCard, projectSvg,finishImage, editImage, readImage, deleteImage, donutCat}
+export {projectSvg, finishImage, editImage, readImage, deleteImage, donutCat, leftOpener}

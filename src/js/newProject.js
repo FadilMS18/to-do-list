@@ -1,9 +1,9 @@
-import { addProjectContent } from "./first"
+import { makeAnElement, appendMe} from "./otherModule"
 import { donutCat as cat, projectSvg } from "./svg"
-import { makeAContent, newTaskDOM, bodyRemoveDial, diffMeterValue, dateRange } from "./taskEdit"
-import { add, differenceInCalendarDays, format } from "date-fns"
-import { checkImportant, todayOrUpcoming } from "./checkDueTo"
-import { timeButton, additionalTask } from "./allTaskDOM"
+import { makeAContent, newTaskDOM,addProjectContent, bodyRemoveDial} from "./projectMaker"
+import {differenceInCalendarDays, format } from "date-fns"
+import { checkImportant, todayOrUpcoming, dateRange, diffMeterValue } from "./checkDueTo"
+import { Sidebar} from "./sidebarHandler"
 
 
 const projectDialog = document.querySelector('#project-dialog')
@@ -11,11 +11,7 @@ const projectDialog = document.querySelector('#project-dialog')
 const form = document.querySelector('#project-form')
 const projectName = document.querySelector('#project-name')
 const projectDescription = document.querySelector('#project-description')
-const projectContainer = document.querySelector('#projects-container')
 const projectIcons = Array.from(document.querySelectorAll('.project-icon'))
-const projectConfirm = document.querySelector('#project-confirm')
-
-console.log(projectIcons)
 
 projectIcons.forEach(icon =>{
     icon.addEventListener('click', (e)=>{
@@ -35,8 +31,6 @@ projectIcons.forEach(icon =>{
 
 
 const body = document.body
-// window.addEventListener('DOMContentLoaded', projectModal)
-
 let projects = []
 let todayTask = []
 let upcomingTask = []
@@ -69,7 +63,18 @@ class Project {
 
 function submitProject(event){
     event.preventDefault()
+    const projectContainer = document.querySelector('#projects-container')
+    let focusIndex = ''
 
+
+    const manyProject = Array.from(document.querySelectorAll('.project-content'))
+    if(manyProject.length){
+        manyProject.forEach((ele, index)=>{
+            if(ele.classList.contains('focus')){
+                focusIndex = index
+            }
+        })
+    }
     projectContainer.innerHTML = ''
 
     let name = projectName.value
@@ -84,27 +89,21 @@ function submitProject(event){
 
     projects.push(newObj)
     projects.forEach((object, index)=>{
+        let projectDom = Array.from(document.querySelectorAll('.project-content'))
         let project = addProjectContent(object.name, projectSvg[object.icon])
-    
-        // projectDom.push(project)
+        
         projectContainer.appendChild(project)
         
         project.addEventListener('click', ()=>{
-            let projectDom = Array.from(document.querySelectorAll('.project-content'))
             projectDom.forEach(div =>{
                 if(div.classList.contains('focus')){
                     div.classList.remove('focus')
                 }
             })
-            timeButton.forEach(button =>{
+            Sidebar.timeButton.forEach(button =>{
                 if(button.classList.contains('fokus')){button.classList.remove('fokus')}
             })
             project.classList.add('focus')
-
-            // console.log(projects[index])
-
-            // document.querySelector('#top-main > h2').textContent = object.name
-            // alert(object.tasks.length)
 
             const dialogAnchor = document.getElementById('project-dialog')
             const main = document.getElementById('main-container')
@@ -170,7 +169,10 @@ function submitProject(event){
 
         })
     })
-    
+    if(focusIndex !== ''){
+        let focusProject = Array.from(document.querySelectorAll('.project-content'))
+        focusProject[focusIndex].classList.add('focus')
+    }
     projectDialog.close()
 }
 
@@ -232,7 +234,6 @@ function readEditButton(parent, parentIndex, object, objectIndex, status){
 }
 
 function finishTask(ele, parentIndex, objectIndex){
-    const element = ele
     const dif = ele.querySelector('#dif-meter')
     if(ele.classList.contains('complete')){
         ele.classList.remove('complete')
@@ -286,38 +287,14 @@ function noTasksHeading(){
     return h3
 }
 
-function makeAnElement(eleName, id = '' , group = ''){
-    const element = document.createElement(eleName)
-    element.setAttribute('id', id)
-    element.setAttribute('class', group)
 
-    return element
-}
-
-function appendMe(parent, ...children){ // Append 2 or more child
-    children.forEach(child =>{
-        parent.appendChild(child)
-    })
-}
 
 function projectModal(){
     projectDialog.showModal()
     form.addEventListener('submit', submitProject)
 }
 
-function editTask(){
-    console.log(projects)
-}
-
-function pushIt(receiver, pusher){
-    pusher.forEach(ele =>{
-        receiver.push(ele)
-    })
-}
-
-function todayUpcomingTaskUpdate(array){
-    
-    pushTask(additionalTask)
+function todayUpcomingTaskUpdate(array){    
     array.forEach(arr =>{
         if(arr.tasks.length){
             arr.tasks.forEach(task =>{
@@ -369,5 +346,8 @@ function resetProjectDialog(element, name, desc){
     element[randomNumber].classList.value = 'project-icon selected'
 }
 
-export { projectModal,finishTask, pushTask, bodyRemoveDial, makeAnElement, appendMe, editTask , projects, todayTask, upcomingTask, importantTask, allTask, readEditButton, noTasksHeading, handleDeleteTask} 
+const time = Array.from(document.querySelectorAll('.due-to-button'))
+console.log(time)
+
+export { projectModal,finishTask, pushTask, bodyRemoveDial, projects, todayTask, upcomingTask, importantTask, allTask, readEditButton, noTasksHeading, handleDeleteTask} 
 

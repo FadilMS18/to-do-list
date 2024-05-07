@@ -1,6 +1,5 @@
 import { differenceInCalendarDays } from "date-fns";
-import {todayTask, upcomingTask, importantTask} from './newProject'
-
+import {importantTask} from './newProject'
 
 function daysDifference(date){
     let diff = differenceInCalendarDays(date, new Date())
@@ -15,10 +14,6 @@ function todayOrUpcoming(date){
     }
 }
 
-
-console.log(daysDifference(new Date()) === 0)
-
-
 function important(difMeter){
     if(difMeter === 'hard'){
         return true
@@ -31,4 +26,37 @@ function checkImportant(difMeter, task){
     }
 }
 
-export {todayOrUpcoming, checkImportant}
+function diffMeterValue(ele, meter, finishStatus){
+    switch (meter){
+        case 'easy':
+            ele.classList.value = 'easy'
+            break;
+        case 'medium':
+            ele.classList.value = 'medium'
+            break;
+        case 'hard':
+            ele.classList.value = 'hard'
+            break;    
+        default:
+            break;
+    }
+    if(finishStatus){
+        ele.classList.add('complete')
+        ele.parentNode.classList.add('complete')
+    }else{
+        ele.classList.remove('complete')
+        ele.parentNode.classList.remove('complete')
+    }
+}
+
+function dateRange(ele, comparison){
+    if(comparison < 0){
+        ele.classList.value = 'past-day'
+    }else if(comparison >= 0 && comparison <= 1){
+        ele.classList.value = 'deadline'
+    }else if(comparison >= 2 && comparison <= 7){
+        ele.classList.value = 'one-week'
+    }else { ele.classList.value = 'more-than-a-week' }
+}
+
+export {todayOrUpcoming, checkImportant, diffMeterValue, dateRange}
