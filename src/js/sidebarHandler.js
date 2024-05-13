@@ -1,4 +1,4 @@
-import { readEditButton, finishTask, handleDeleteTask, allTask, upcomingTask, importantTask, noTasksHeading, todayTask } from "./newProject"
+import { readEditButton, finishTask, handleDeleteTask,ToDo, noTasksHeading, todayUpcomingTaskUpdate } from "./newProject"
 import { newTaskDOM } from "./projectMaker"
 import { makeAnElement, appendMe, pushArray } from "./otherModule"
 import { leftOpener } from "./svg"
@@ -7,46 +7,6 @@ export let test = 'test'
 // differenceInCalenderDays(andThisDate, CompareThisDate)
 
 // export const timeButton = Array.from(document.querySelectorAll('.due-to-button'))
-
-
-function displayAllTask(taskType, title){
-
-    document.querySelector('#top-main > h2').textContent = `${title} Tasks`
-    const container = document.getElementById('center-main')
-    const mainContainer = container.parentNode
-    container.innerHTML = ''
-    showAllTask(container, taskType)
-    if(mainContainer.querySelector('#new-task-button')){
-        const removeButton = document.querySelector('#new-task-button')
-        mainContainer.removeChild(removeButton)
-    }
-}   
-
-function showAllTask(container, taskType){
-    if(!taskType.length){
-        container.appendChild(noTasksHeading())
-    }else{
-        taskType.forEach(task =>{
-            const li = newTaskDOM(task.name, task.dueTo, task.dif, task.taskStatus)
-            const buttonContainer = li.querySelector('#button-container')
-            let editButton = buttonContainer.querySelector('#edit-task')
-            buttonContainer.removeChild(editButton)
-
-            li.querySelector('#finish-task').addEventListener('click', ()=>{
-                finishTask(li, task.projectIndex, task.index)
-            })
-
-            li.querySelector('#read-task').addEventListener('click', ()=>{
-                readEditButton(li, false, task, false, 'read')
-            })
-            li.querySelector('#delete-task').addEventListener('click', ()=>{
-                handleDeleteTask(li, task)
-            })
-            
-            container.appendChild(li)
-        })
-    }
-}
 
 class Sidebar {
     static _timeButton = []
@@ -106,6 +66,47 @@ class Sidebar {
     }
 }
 
+
+function displayAllTask(taskType, title, type){
+    document.querySelector('#top-main > h2').textContent = `${title} Tasks`
+    const container = document.getElementById('center-main')
+    const mainContainer = container.parentNode
+    container.innerHTML = ''
+    todayUpcomingTaskUpdate(ToDo.projects)
+    showAllTask(container, taskType, type)
+    if(mainContainer.querySelector('#new-task-button')){
+        const removeButton = document.querySelector('#new-task-button')
+        mainContainer.removeChild(removeButton)
+    }
+}   
+
+function showAllTask(container, taskType, type){
+    console.log(taskType.length)
+    if(!taskType.length){
+        console.log('problem is in the sidebar')
+        container.appendChild(noTasksHeading())
+    }
+    taskType.forEach(task =>{
+        const li = newTaskDOM(task.name, task.dueTo, task.dif, task.taskStatus)
+        const buttonContainer = li.querySelector('#button-container')
+        let editButton = buttonContainer.querySelector('#edit-task')
+        buttonContainer.removeChild(editButton)
+
+        li.querySelector('#finish-task').addEventListener('click', ()=>{
+            finishTask(li, task.projectIndex, task.index)
+        })
+
+        li.querySelector('#read-task').addEventListener('click', ()=>{
+            readEditButton(li, false, task, false, 'read')
+        })
+        li.querySelector('#delete-task').addEventListener('click', ()=>{
+            handleDeleteTask(li, task, false, type)
+        })
+            
+        container.appendChild(li)
+    })
+}
+
 function topSideBarEvent(element){
     element.timeButton.forEach(button =>{
         button.addEventListener('click', (e)=>{
@@ -125,22 +126,30 @@ function topSideBarEvent(element){
     })
     
     element.timeButton[0].addEventListener('click', ()=>{
-        displayAllTask(allTask, element.timeButton[0].textContent)   
+        todayUpcomingTaskUpdate(ToDo.projects)
+        displayAllTask(ToDo.allTask, element.timeButton[0].textContent, 'all')   
     })
     
     element.timeButton[1].addEventListener('click', ()=>{
-        displayAllTask(todayTask, element.timeButton[1].textContent)
+        todayUpcomingTaskUpdate(ToDo.projects)
+        displayAllTask(ToDo.todayTask, element.timeButton[1].textContent, 'today')
     })
     element.timeButton[2].addEventListener('click', ()=>{
-        displayAllTask(upcomingTask, element.timeButton[2].textContent)
+        todayUpcomingTaskUpdate(ToDo.projects)
+        displayAllTask(ToDo.upcomingTask, element.timeButton[2].textContent, 'upcoming')
     })
     element.timeButton[3].addEventListener('click', ()=>{
-        displayAllTask(importantTask, element.timeButton[3].textContent)
+        todayUpcomingTaskUpdate(ToDo.projects)
+        displayAllTask(ToDo.importantTask, element.timeButton[3].textContent, 'important')
     })
+}
+
+function loadFirstPage(){
+    todayUpcomingTaskUpdate(ToDo.projects)
+    displayAllTask(ToDo.allTask, 'All', 'all')
 }
 
 
 
-
 console.log(Sidebar._timeButton)
-export {Sidebar, topSideBarEvent}
+export {Sidebar, topSideBarEvent, loadFirstPage}

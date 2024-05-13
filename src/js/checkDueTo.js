@@ -1,5 +1,5 @@
 import { differenceInCalendarDays } from "date-fns";
-import {importantTask} from './newProject'
+import {ToDo} from './newProject'
 
 function daysDifference(date){
     let diff = differenceInCalendarDays(date, new Date())
@@ -22,7 +22,7 @@ function important(difMeter){
 
 function checkImportant(difMeter, task){
     if(important(difMeter)){
-        importantTask.push(task)
+        ToDo.importantTask.push(task)
     }
 }
 
