@@ -6,7 +6,8 @@
   "scripts": {
     "server": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "pushBranch": "git push origin dummy-design"
+    "pushBranch": "git push origin dummy-design",
+    "pushSubTree" : "git subtree push --prefix dist origin gh-pages"
   },
   "keywords": [],
   "author": "",
