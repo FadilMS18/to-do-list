@@ -1,12 +1,10 @@
-import { readEditButton, finishTask, handleDeleteTask,ToDo, noTasksHeading, todayUpcomingTaskUpdate } from "./newProject"
+import { readEditButton, finishTask, handleDeleteTask,ToDo, todayUpcomingTaskUpdate } from "./newProject"
 import { newTaskDOM } from "./projectMaker"
-import { makeAnElement, appendMe, pushArray } from "./otherModule"
+import { makeAnElement, appendMe, pushArray, noTasksHeading } from "./otherModule"
 import { leftOpener } from "./svg"
 export let test = 'test'
 // isAfter(isThisAfter, this)
 // differenceInCalenderDays(andThisDate, CompareThisDate)
-
-// export const timeButton = Array.from(document.querySelectorAll('.due-to-button'))
 
 class Sidebar {
     static _timeButton = []
@@ -81,9 +79,7 @@ function displayAllTask(taskType, title, type){
 }   
 
 function showAllTask(container, taskType, type){
-    console.log(taskType.length)
     if(!taskType.length){
-        console.log('problem is in the sidebar')
         container.appendChild(noTasksHeading())
     }
     taskType.forEach(task =>{
@@ -149,7 +145,4 @@ function loadFirstPage(){
     displayAllTask(ToDo.allTask, 'All', 'all')
 }
 
-
-
-console.log(Sidebar._timeButton)
 export {Sidebar, topSideBarEvent, loadFirstPage}

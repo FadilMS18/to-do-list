@@ -1,6 +1,7 @@
 import { format } from 'date-fns'
 import { makeAnElement, appendMe } from './otherModule'
 
+// Make Navbar Dom
 function makeNavbar(){
     const nav = makeAnElement('nav', 'nav')
 
@@ -17,7 +18,6 @@ function makeNavbar(){
     appendMe(p, br, span)
     appendMe(div, p)
     appendMe(nav, h1, div)
-    console.log(nav)
 
     return nav
 }

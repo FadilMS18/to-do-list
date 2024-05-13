@@ -4,7 +4,7 @@ import './css/main.css'
 import { makeNavbar} from './js/navbarHandler'
 import {projectModal, ToDo, storageProjectHandler } from './js/newProject'
 import { Sidebar, loadFirstPage, topSideBarEvent } from './js/sidebarHandler'
-import { b, Chest } from './js/LocalStorageHandler'
+import { Chest } from './js/LocalStorageHandler'
 
 const body = document.body
 
@@ -15,8 +15,7 @@ const Start = (function(){
     topSideBarEvent(Sidebar)
     setTimeout(()=>{
         loadFirstPage()
-    },1)
-    
+    },1)    
 })()
 
 // Sidebar left & right
@@ -52,17 +51,12 @@ window.addEventListener('DOMContentLoaded', ()=>{
     
     if(Chest.getItem('projects')){
         let getStorage = Chest.getFromStorage('projects')
-        console.log(getStorage)
         let projectContainer = document.querySelector('#projects-container')
         let focusIndex = ''
         storageProjectHandler(getStorage, projectContainer,focusIndex )
     }else{
-        console.log('Something is wrong')
+        alert('Something is wrong with the inventory (LocalStorage)')
     }
     
 })
-
-
-
-
-console.log('Type localStorage.clear() to delete all the Projects & tasks :)')
+console.log('Type localStorage.clear() and then refresh the page to delete all the Projects & tasks :)')

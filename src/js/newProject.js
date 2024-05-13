@@ -1,12 +1,12 @@
-import { makeAnElement, appendMe} from "./otherModule"
+import { makeAnElement, appendMe, noTasksHeading, bodyRemoveDial, resetProjectDialog} from "./otherModule"
 import { donutCat as cat, projectSvg } from "./svg"
-import { makeAContent, newTaskDOM,addProjectContent, bodyRemoveDial} from "./projectMaker"
+import { makeAContent, newTaskDOM,addProjectContent} from "./projectMaker"
 import {differenceInCalendarDays, format } from "date-fns"
 import { checkImportant, todayOrUpcoming, dateRange, diffMeterValue } from "./checkDueTo"
 import { Sidebar} from "./sidebarHandler"
 import { Chest } from './LocalStorageHandler'
 
-
+const body = document.body
 
 class ToDo{
     static projects = []
@@ -42,8 +42,8 @@ class Project {
 
 const projectDialog = document.querySelector('#project-dialog')
 
+// New Project icon
 const projectIcons = Array.from(document.querySelectorAll('.project-icon'))
-
 projectIcons.forEach(icon =>{
     icon.addEventListener('click', (e)=>{
         if(e.target.classList.contains('selected')){
@@ -59,10 +59,6 @@ projectIcons.forEach(icon =>{
         e.target.classList.add('selected')
     })
 })
-
-
-const body = document.body
-
 
 function submitProject(event){
     event.preventDefault()
@@ -99,95 +95,6 @@ function submitProject(event){
         Chest.setItemsToStorage('projects', ToDo.projects)
     }
     
-    
-    // let getProjects = Chest.getFromStorage('projects')
-    // console.log(getProjects)
-    console.log(ToDo.projects)
-    // ToDo.forEach((object, index)=>{
-    //     let projectDom = Array.from(document.querySelectorAll('.project-content'))
-    //     let project = addProjectContent(object.name, projectSvg[object.icon])
-        
-    //     projectContainer.appendChild(project)
-        
-    //     project.addEventListener('click', ()=>{
-    //         projectDom.forEach(div =>{
-    //             if(div.classList.contains('focus')){
-    //                 div.classList.remove('focus')
-    //             }
-    //         })
-    //         Sidebar.timeButton.forEach(button =>{
-    //             if(button.classList.contains('fokus')){button.classList.remove('fokus')}
-    //         })
-    //         project.classList.add('focus')
-
-    //         const dialogAnchor = document.getElementById('project-dialog')
-    //         const main = document.getElementById('main-container')
-    //         main.innerHTML = ''
-    //         const mainDiv = makeAnElement('div', 'main-content')
-    //         main.appendChild(mainDiv)
-
-    //         const topMain = makeAnElement('div', 'top-main')
-    //         const title = makeAnElement('h2', '')
-    //         title.textContent = `Project ${object.name}`
-    //         const donutCat = makeAnElement('img', '')
-    //         donutCat.src = cat
-    //         appendMe(topMain, title, donutCat)
-
-    //         const centerMain = makeAnElement('div', 'center-main')
-            
-    //         const newTaskButton = makeAnElement('button', 'new-task-button')
-    //         newTaskButton.textContent = 'Add Task'
-    //         appendMe(mainDiv, topMain, centerMain, newTaskButton)
-    //         body.insertBefore(main, dialogAnchor)
-    //         displayProjectTask(index)
-
-    //         if(!object.tasks.length){
-    //             centerMain.appendChild(noTasksHeading())
-    //         }
-
-    //         newTaskButton.addEventListener('click', ()=>{
-    //             const dialog = makeAnElement('dialog', 'project-dialog')
-    //             body.appendChild(dialog)
-    //             const content = makeAContent('', '', false)
-    //             dialog.appendChild(content.container)
-    //             dialog.showModal()
-
-    //             content.container.addEventListener('submit', (e)=>{
-    //                 e.preventDefault()
-    //                 const task = {
-    //                     name : content.container.querySelector('#project-name').value,
-    //                     desc : content.container.querySelector('#project-description').value,
-    //                     dueTo : content.container.querySelector('#date-input').value,
-    //                     dif: content.container.querySelector('#select-dif').value,
-    //                     projectIndex : index,
-    //                     taskStatus : false,
-
-    //                 }
-    //                 ToDo.projects[index].tasks.push(task)
-
-    //                 todayUpcomingTaskUpdate(ToDo.projects, index)
-                    
-                    
-    //                 if(ToDo.projects[index].tasks.length > 6 && !centerMain.classList.contains('scroll')){
-    //                     centerMain.classList.add('scroll')
-    //                 }
-    //                 else if(ToDo.projects[index].tasks.length < 7 && centerMain.classList.contains('scroll')){
-    //                     centerMain.classList.remove('scroll')
-    //                 }
-    //                 console.log(ToDo.projects[index].tasks)
-
-    //                 displayProjectTask(index)
-    //                 dialog.close()                    
-    //                 setTimeout(bodyRemoveDial, 501)
-    //             })
-    //         })
-
-    //     })
-    // })
-    // if(focusIndex !== ''){
-    //     let focusProject = Array.from(document.querySelectorAll('.project-content'))
-    //     focusProject[focusIndex].classList.add('focus')
-    // }
     projectHandler(ToDo, projectContainer, focusIndex)
     projectDialog.close()
 }
@@ -196,7 +103,6 @@ function displayProjectTask(projectIndex){
     const container = document.getElementById('center-main')
     container.innerHTML = ''
     newTask(container, projectIndex)
-    console.log(ToDo.projects)
 }
 
 
@@ -221,7 +127,7 @@ function newTask(container, projectIndex){
     })
 }
 
-
+// Method to edit or read the selected task
 function readEditButton(parent, parentIndex, object, objectIndex, status){
     const difMeter = parent.querySelector('#dif-meter')
     const taskName = parent.querySelector('#task-name')
@@ -238,8 +144,6 @@ function readEditButton(parent, parentIndex, object, objectIndex, status){
         date.textContent = format(content.dateDue.value, 'dd-MM-yyyy')     
         dateRange(date, differenceInCalendarDays(content.dateDue.value, new Date()))
         diffMeterValue(difMeter, content.difficulty.value, object.taskStatus)
-        console.log(content.dateDue.value)
-        console.log(differenceInCalendarDays(content.dateDue.value, new Date()))
         if(status === 'edit'){
             editFunction(parentIndex, objectIndex, content)
         }
@@ -248,6 +152,16 @@ function readEditButton(parent, parentIndex, object, objectIndex, status){
     })
 }
 
+function editFunction(parentIndex, objectIndex, contentObject){
+    ToDo.projects[parentIndex].tasks[objectIndex].name = contentObject.title.value
+    ToDo.projects[parentIndex].tasks[objectIndex].desc = contentObject.script.value
+    ToDo.projects[parentIndex].tasks[objectIndex].dueTo = contentObject.dateDue.value
+    ToDo.projects[parentIndex].tasks[objectIndex].dif = contentObject.difficulty.value
+    Chest.setItemsToStorage('projects', ToDo.projects)
+}
+
+
+// Finish status of the selected task
 function finishTask(ele, parentIndex, objectIndex){
     const dif = ele.querySelector('#dif-meter')
     if(ele.classList.contains('complete')){
@@ -266,14 +180,7 @@ function changeFinishStatus(parentIndex, objectIndex, status){
     Chest.setItemsToStorage('projects', ToDo.projects)
 }
 
-function editFunction(parentIndex, objectIndex, contentObject){
-    ToDo.projects[parentIndex].tasks[objectIndex].name = contentObject.title.value
-    ToDo.projects[parentIndex].tasks[objectIndex].desc = contentObject.script.value
-    ToDo.projects[parentIndex].tasks[objectIndex].dueTo = contentObject.dateDue.value
-    ToDo.projects[parentIndex].tasks[objectIndex].dif = contentObject.difficulty.value
-    Chest.setItemsToStorage('projects', ToDo.projects)
-}
-
+// Delete func for selected task
 function handleDeleteTask(element, object, projects = true, taskType = false){
     const centerMain = document.getElementById('center-main')
     element.classList.add('erase')
@@ -309,25 +216,6 @@ function deleteProjectTask(parentIndex, objectIndex){
     ToDo.projects[parentIndex]._tasks = ToDo.projects[parentIndex]._tasks.filter(task => task !== removeTask)  
     setTimeout(todayUpcomingTaskUpdate(ToDo.projects), 400)
     Chest.setItemsToStorage('projects', ToDo.projects)
-    console.log(ToDo.allTask)
-    console.log(ToDo.todayTask)
-    console.log(ToDo.upcomingTask)
-}
-
-
-function noTasksHeading(){
-    const h3 = makeAnElement('h3', 'no-task-heading')
-    h3.style.textAlign = 'center'
-    h3.textContent = "You Don't Have any task here yet"
-    return h3
-}
-
-
-
-function projectModal(){
-    projectDialog.showModal()
-    const form = document.querySelector('#project-form')
-    form.addEventListener('submit', submitProject)
 }
 
 function todayUpcomingTaskUpdate(array){    
@@ -353,19 +241,6 @@ function todayUpcomingTaskUpdate(array){
         }
     })
 }
-
-function resetProjectDialog(element, name, desc){
-    name.value = ''
-    desc.value = ''
-    let randomNumber = Math.floor(Math.random() * element.length)
-    for(let i = 0; i < element.length; i++){
-        element[i].classList.value = 'project-icon not-selected'
-    }
-    element[randomNumber].classList.value = 'project-icon selected'
-}
-
-const time = Array.from(document.querySelectorAll('.due-to-button'))
-console.log(time)
 
 function projectHandler(array, projectContainer, focusIndex){
     array.projects.forEach((object, index)=>{
@@ -439,15 +314,12 @@ function projectHandler(array, projectContainer, focusIndex){
                     else if(array.projects[index].tasks.length < 7 && centerMain.classList.contains('scroll')){
                         centerMain.classList.remove('scroll')
                     }
-                    
-                    console.log(array.projects[index].tasks)
-    
+                        
                     displayProjectTask(index)
                     dialog.close()                    
                     setTimeout(bodyRemoveDial, 501)
                 })
             })
-    
         })
     })
     if(focusIndex !== ''){
@@ -457,13 +329,11 @@ function projectHandler(array, projectContainer, focusIndex){
 }
 function storageProjectHandler(array, projectContainer, focusIndex){
     array.forEach((object, index)=>{
-        let project = addProjectContent(object.name, projectSvg[object.icon])
-        
+        let project = addProjectContent(object.name, projectSvg[object.icon])    
         projectContainer.appendChild(project)
 
         project.addEventListener('click', ()=>{
             let projectDom = Array.from(document.querySelectorAll('.project-content'))
-            console.log(projectDom)
             projectDom.forEach(div =>{
                 if(div.classList.contains('focus')){
                     div.classList.remove('focus')
@@ -534,7 +404,6 @@ function storageProjectHandler(array, projectContainer, focusIndex){
                     setTimeout(bodyRemoveDial, 501)
                 })
             })
-    
         })
     })
     if(focusIndex !== ''){
@@ -543,5 +412,11 @@ function storageProjectHandler(array, projectContainer, focusIndex){
     }
 }
 
-export { projectModal,finishTask, todayUpcomingTaskUpdate, bodyRemoveDial,readEditButton, noTasksHeading, handleDeleteTask,storageProjectHandler, ToDo} 
+function projectModal(){
+    projectDialog.showModal()
+    const form = document.querySelector('#project-form')
+    form.addEventListener('submit', submitProject)
+}
+
+export { projectModal,finishTask, todayUpcomingTaskUpdate, bodyRemoveDial,readEditButton, handleDeleteTask,storageProjectHandler, ToDo} 
 

@@ -5,7 +5,7 @@ import { diffMeterValue, dateRange } from "./checkDueTo";
 
 let body = document.body
 
-
+// Func to add new Project Content Dom
 function addProjectContent(title, icon){
     const div = document.createElement('div')
     div.classList.add('project-content')
@@ -21,6 +21,7 @@ function addProjectContent(title, icon){
     return div
 }
 
+// Func to make Form and task details
 function makeAContent(name, desc, dueTo, option = 'easy', read = true){
     const _form = document.createElement('form')
     _form.setAttribute('id', 'project-form') 
@@ -109,12 +110,7 @@ function makeAContent(name, desc, dueTo, option = 'easy', read = true){
     }
 }
 
-function bodyRemoveDial(){
-    const dialogs = Array.from(document.querySelectorAll('#project-dialog'))
-    dialogs[1].innerHTML = ''
-    body.removeChild(dialogs[1])
-}
-
+// Func to add New task Dom
 function newTaskDOM(taskTitle, dueTo, dif, finishStatus){
     const taskContainer = makeAnElement('div', '', 'tasks')
 
@@ -150,7 +146,5 @@ function newTaskDOM(taskTitle, dueTo, dif, finishStatus){
     return taskContainer
 
 }
-    
 
-
-export {makeAContent, newTaskDOM, addProjectContent, bodyRemoveDial}
+export {makeAContent, newTaskDOM, addProjectContent}
